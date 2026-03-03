@@ -1,8 +1,7 @@
 <?php
 require_once __DIR__ . '/../config/db.php';
 
-$pdo = db();
-$id  = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
 if (!$id) {
     header('Location: index.php');
@@ -10,22 +9,21 @@ if (!$id) {
 }
 
 // Load existing
-$sp = $pdo->prepare("SELECT * FROM skateparks WHERE id = ?");
-$sp->execute([$id]);
-$sp = $sp->fetch();
+$sp = db_run("SELECT * FROM skateparks WHERE id = ?", [$id])->get_result()->fetch_assoc();
 
 if (!$sp) {
     header('Location: index.php');
     exit;
 }
 
-$prefectures = $pdo->query("SELECT id, name, name_ja FROM prefectures ORDER BY name")->fetchAll();
-$all_tags    = $pdo->query("SELECT id, name, slug FROM tags ORDER BY name")->fetchAll();
+$prefectures = db()->query("SELECT id, name, name_ja FROM prefectures ORDER BY name")->fetch_all(MYSQLI_ASSOC);
+$all_tags    = db()->query("SELECT id, name, slug FROM tags ORDER BY name")->fetch_all(MYSQLI_ASSOC);
 
 // Current tags for this park
-$cur_tags_stmt = $pdo->prepare("SELECT tag_id FROM skatepark_tags WHERE skatepark_id = ?");
-$cur_tags_stmt->execute([$id]);
-$current_tag_ids = $cur_tags_stmt->fetchAll(PDO::FETCH_COLUMN);
+$current_tag_ids = array_column(
+    db_run("SELECT tag_id FROM skatepark_tags WHERE skatepark_id = ?", [$id])->get_result()->fetch_all(MYSQLI_ASSOC),
+    'tag_id'
+);
 
 $errors = [];
 $data   = $sp; // pre-fill from DB
@@ -48,54 +46,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Slug uniqueness (excluding self)
     if (empty($errors)) {
-        $dup = $pdo->prepare("SELECT COUNT(*) FROM skateparks WHERE slug = ? AND id != ?");
-        $dup->execute([$data['slug'], $id]);
-        if ($dup->fetchColumn() > 0) {
+        $dup_count = (int) db_run("SELECT COUNT(*) FROM skateparks WHERE slug = ? AND id != ?", [$data['slug'], $id])->get_result()->fetch_row()[0];
+        if ($dup_count > 0) {
             $errors[] = 'Slug "' . htmlspecialchars($data['slug']) . '" is already used by another skatepark.';
         }
     }
 
     if (empty($errors)) {
-        $upd = $pdo->prepare("
+        $park_type = in_array($data['park_type'], ['indoor','outdoor','both']) ? $data['park_type'] : 'outdoor';
+        db_run("
             UPDATE skateparks SET
-                slug=:slug, name=:name, name_ja=:name_ja, prefecture_id=:prefecture_id,
-                city=:city, address=:address, description=:description, history=:history,
-                facilities=:facilities, surface_type=:surface_type, park_type=:park_type,
-                opening_hours=:opening_hours, closed_days=:closed_days, admission_fee=:admission_fee,
-                website=:website, phone=:phone, latitude=:latitude, longitude=:longitude,
-                image_url=:image_url, featured=:featured
-            WHERE id=:id
-        ");
-        $upd->execute([
-            ':slug'          => $data['slug'],
-            ':name'          => $data['name'],
-            ':name_ja'       => $data['name_ja']       ?: null,
-            ':prefecture_id' => (int)$data['prefecture_id'],
-            ':city'          => $data['city']          ?: null,
-            ':address'       => $data['address']       ?: null,
-            ':description'   => $data['description'],
-            ':history'       => $data['history']       ?: null,
-            ':facilities'    => $data['facilities']    ?: null,
-            ':surface_type'  => $data['surface_type']  ?: null,
-            ':park_type'     => in_array($data['park_type'], ['indoor','outdoor','both']) ? $data['park_type'] : 'outdoor',
-            ':opening_hours' => $data['opening_hours'] ?: null,
-            ':closed_days'   => $data['closed_days']   ?: null,
-            ':admission_fee' => $data['admission_fee'] ?: null,
-            ':website'       => $data['website']       ?: null,
-            ':phone'         => $data['phone']         ?: null,
-            ':latitude'      => $data['latitude']  !== '' ? (float)$data['latitude']  : null,
-            ':longitude'     => $data['longitude'] !== '' ? (float)$data['longitude'] : null,
-            ':image_url'     => $data['image_url']     ?: null,
-            ':featured'      => (int)$data['featured'],
-            ':id'            => $id,
+                slug=?, name=?, name_ja=?, prefecture_id=?,
+                city=?, address=?, description=?, history=?,
+                facilities=?, surface_type=?, park_type=?,
+                opening_hours=?, closed_days=?, admission_fee=?,
+                website=?, phone=?, latitude=?, longitude=?,
+                image_url=?, featured=?
+            WHERE id=?
+        ", [
+            $data['slug'],
+            $data['name'],
+            $data['name_ja']       ?: null,
+            $data['prefecture_id'],
+            $data['city']          ?: null,
+            $data['address']       ?: null,
+            $data['description'],
+            $data['history']       ?: null,
+            $data['facilities']    ?: null,
+            $data['surface_type']  ?: null,
+            $park_type,
+            $data['opening_hours'] ?: null,
+            $data['closed_days']   ?: null,
+            $data['admission_fee'] ?: null,
+            $data['website']       ?: null,
+            $data['phone']         ?: null,
+            $data['latitude']  !== '' ? (float)$data['latitude']  : null,
+            $data['longitude'] !== '' ? (float)$data['longitude'] : null,
+            $data['image_url']     ?: null,
+            (int)$data['featured'],
+            $id,
         ]);
 
         // Update tags: delete old, insert new
-        $pdo->prepare("DELETE FROM skatepark_tags WHERE skatepark_id = ?")->execute([$id]);
+        db_run("DELETE FROM skatepark_tags WHERE skatepark_id = ?", [$id]);
         if ($selected_tags) {
-            $ins_tag = $pdo->prepare("INSERT IGNORE INTO skatepark_tags (skatepark_id, tag_id) VALUES (?,?)");
             foreach ($selected_tags as $tid) {
-                $ins_tag->execute([$id, $tid]);
+                db_run("INSERT IGNORE INTO skatepark_tags (skatepark_id, tag_id) VALUES (?, ?)", [$id, (int)$tid]);
             }
         }
 

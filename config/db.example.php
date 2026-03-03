@@ -2,7 +2,7 @@
 // ============================================================
 // Database Configuration
 // ============================================================
-// Edit these values to match your MySQL server settings.
+// Copy this file to config/db.php and edit the values below.
 
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');       // your MySQL username
@@ -11,27 +11,43 @@ define('DB_NAME', 'japan_skateparks');
 define('DB_CHARSET', 'utf8mb4');
 
 // ============================================================
-// PDO Connection (singleton)
+// MySQLi Connection (singleton)
 // ============================================================
 
-function db(): PDO {
-    static $pdo = null;
-    if ($pdo === null) {
-        $dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=' . DB_CHARSET;
+function db(): mysqli {
+    static $mysqli = null;
+    if ($mysqli === null) {
+        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
         try {
-            $pdo = new PDO($dsn, DB_USER, DB_PASS, [
-                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES   => false,
-            ]);
-        } catch (PDOException $e) {
+            $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+            $mysqli->set_charset(DB_CHARSET);
+        } catch (mysqli_sql_exception $e) {
             die('<div style="font-family:monospace;padding:2em;background:#fdd;border:1px solid #c00;">'
                 . '<strong>Database connection failed:</strong> ' . htmlspecialchars($e->getMessage())
                 . '<br><br>Please edit <code>config/db.php</code> with your MySQL credentials and make sure you have imported <code>sql/schema.sql</code>.'
                 . '</div>');
         }
     }
-    return $pdo;
+    return $mysqli;
+}
+
+// ============================================================
+// Helper: prepare → bind → execute → return stmt
+// ============================================================
+
+function db_run(string $sql, array $params = []): mysqli_stmt {
+    $db   = db();
+    $stmt = $db->prepare($sql);
+    if ($params) {
+        $types = str_repeat('s', count($params));
+        $refs  = [&$types];
+        foreach ($params as &$p) {
+            $refs[] = &$p;
+        }
+        call_user_func_array([$stmt, 'bind_param'], $refs);
+    }
+    $stmt->execute();
+    return $stmt;
 }
 
 // ============================================================

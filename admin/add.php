@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/../config/db.php';
 
-$pdo    = db();
 $errors = [];
 $data   = [
     'name' => '', 'name_ja' => '', 'slug' => '', 'prefecture_id' => '',
@@ -12,8 +11,8 @@ $data   = [
     'image_url' => '', 'featured' => 0,
 ];
 
-$prefectures = $pdo->query("SELECT id, name, name_ja FROM prefectures ORDER BY name")->fetchAll();
-$all_tags    = $pdo->query("SELECT id, name, slug FROM tags ORDER BY name")->fetchAll();
+$prefectures = db()->query("SELECT id, name, name_ja FROM prefectures ORDER BY name")->fetch_all(MYSQLI_ASSOC);
+$all_tags    = db()->query("SELECT id, name, slug FROM tags ORDER BY name")->fetch_all(MYSQLI_ASSOC);
 
 // Helper: generate slug from name
 function make_slug(string $str): string {
@@ -43,53 +42,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Check slug uniqueness
     if (empty($errors)) {
-        $dup = $pdo->prepare("SELECT COUNT(*) FROM skateparks WHERE slug = ?");
-        $dup->execute([$data['slug']]);
-        if ($dup->fetchColumn() > 0) {
+        $dup_count = (int) db_run("SELECT COUNT(*) FROM skateparks WHERE slug = ?", [$data['slug']])->get_result()->fetch_row()[0];
+        if ($dup_count > 0) {
             $errors[] = 'Slug "' . htmlspecialchars($data['slug']) . '" already exists. Choose a different one.';
         }
     }
 
     if (empty($errors)) {
-        $ins = $pdo->prepare("
+        $park_type = in_array($data['park_type'], ['indoor','outdoor','both']) ? $data['park_type'] : 'outdoor';
+        db_run("
             INSERT INTO skateparks
                 (slug, name, name_ja, prefecture_id, city, address, description, history,
                  facilities, surface_type, park_type, opening_hours, closed_days, admission_fee,
                  website, phone, latitude, longitude, image_url, featured)
-            VALUES
-                (:slug,:name,:name_ja,:prefecture_id,:city,:address,:description,:history,
-                 :facilities,:surface_type,:park_type,:opening_hours,:closed_days,:admission_fee,
-                 :website,:phone,:latitude,:longitude,:image_url,:featured)
-        ");
-        $ins->execute([
-            ':slug'          => $data['slug'],
-            ':name'          => $data['name'],
-            ':name_ja'       => $data['name_ja']       ?: null,
-            ':prefecture_id' => (int) $data['prefecture_id'],
-            ':city'          => $data['city']           ?: null,
-            ':address'       => $data['address']        ?: null,
-            ':description'   => $data['description'],
-            ':history'       => $data['history']        ?: null,
-            ':facilities'    => $data['facilities']     ?: null,
-            ':surface_type'  => $data['surface_type']   ?: null,
-            ':park_type'     => in_array($data['park_type'], ['indoor','outdoor','both']) ? $data['park_type'] : 'outdoor',
-            ':opening_hours' => $data['opening_hours']  ?: null,
-            ':closed_days'   => $data['closed_days']    ?: null,
-            ':admission_fee' => $data['admission_fee']  ?: null,
-            ':website'       => $data['website']        ?: null,
-            ':phone'         => $data['phone']          ?: null,
-            ':latitude'      => $data['latitude']  !== '' ? (float)$data['latitude']  : null,
-            ':longitude'     => $data['longitude'] !== '' ? (float)$data['longitude'] : null,
-            ':image_url'     => $data['image_url']      ?: null,
-            ':featured'      => (int)$data['featured'],
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ", [
+            $data['slug'],
+            $data['name'],
+            $data['name_ja']       ?: null,
+            $data['prefecture_id'],
+            $data['city']          ?: null,
+            $data['address']       ?: null,
+            $data['description'],
+            $data['history']       ?: null,
+            $data['facilities']    ?: null,
+            $data['surface_type']  ?: null,
+            $park_type,
+            $data['opening_hours'] ?: null,
+            $data['closed_days']   ?: null,
+            $data['admission_fee'] ?: null,
+            $data['website']       ?: null,
+            $data['phone']         ?: null,
+            $data['latitude']  !== '' ? (float)$data['latitude']  : null,
+            $data['longitude'] !== '' ? (float)$data['longitude'] : null,
+            $data['image_url']     ?: null,
+            (int)$data['featured'],
         ]);
-        $new_id = (int) $pdo->lastInsertId();
+        $new_id = (int) db()->insert_id;
 
         // Insert tags
         if ($selected_tags) {
-            $ins_tag = $pdo->prepare("INSERT IGNORE INTO skatepark_tags (skatepark_id, tag_id) VALUES (?,?)");
             foreach ($selected_tags as $tid) {
-                $ins_tag->execute([$new_id, $tid]);
+                db_run("INSERT IGNORE INTO skatepark_tags (skatepark_id, tag_id) VALUES (?, ?)", [$new_id, (int)$tid]);
             }
         }
 

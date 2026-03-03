@@ -1,21 +1,18 @@
 <?php
 require_once __DIR__ . '/config/db.php';
 
-$pdo    = db();
 $name   = isset($_GET['name'])   ? trim($_GET['name'])   : '';
 $region = isset($_GET['region']) ? trim($_GET['region']) : '';
 
 if ($name) {
     // ---- Single prefecture article ----
-    $stmt = $pdo->prepare("
+    $pref = db_run("
         SELECT p.*, COUNT(s.id) as park_count
         FROM prefectures p
         LEFT JOIN skateparks s ON s.prefecture_id = p.id
         WHERE p.name = ?
         GROUP BY p.id
-    ");
-    $stmt->execute([$name]);
-    $pref = $stmt->fetch();
+    ", [$name])->get_result()->fetch_assoc();
 
     if (!$pref) {
         header('Location: ' . BASE_URL . '/prefecture.php');
@@ -23,14 +20,12 @@ if ($name) {
     }
 
     // Parks in this prefecture
-    $parks = $pdo->prepare("
+    $parks = db_run("
         SELECT s.slug, s.name, s.name_ja, s.city, s.park_type, s.surface_type, s.admission_fee
         FROM skateparks s
         WHERE s.prefecture_id = ?
         ORDER BY s.name ASC
-    ");
-    $parks->execute([$pref['id']]);
-    $parks = $parks->fetchAll();
+    ", [$pref['id']])->get_result()->fetch_all(MYSQLI_ASSOC);
 
     $page_title = $pref['name'] . ' Skateparks';
 
@@ -93,16 +88,14 @@ if ($name) {
 
 } elseif ($region) {
     // ---- Region listing ----
-    $prefs = $pdo->prepare("
+    $prefs = db_run("
         SELECT p.name, p.name_ja, p.region, COUNT(s.id) as cnt
         FROM prefectures p
         LEFT JOIN skateparks s ON s.prefecture_id = p.id
         WHERE p.region = ?
         GROUP BY p.id
         ORDER BY p.name ASC
-    ");
-    $prefs->execute([$region]);
-    $prefs = $prefs->fetchAll();
+    ", [$region])->get_result()->fetch_all(MYSQLI_ASSOC);
 
     $page_title = $region . ' Region Skateparks';
     require_once __DIR__ . '/includes/header.php';
@@ -126,13 +119,13 @@ if ($name) {
 
 } else {
     // ---- All prefectures overview ----
-    $all = $pdo->query("
+    $all = db()->query("
         SELECT p.name, p.name_ja, p.region, COUNT(s.id) as cnt
         FROM prefectures p
         LEFT JOIN skateparks s ON s.prefecture_id = p.id
         GROUP BY p.id
         ORDER BY p.region, p.name ASC
-    ")->fetchAll();
+    ")->fetch_all(MYSQLI_ASSOC);
 
     // Group by region
     $by_region = [];

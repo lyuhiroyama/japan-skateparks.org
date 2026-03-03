@@ -8,16 +8,16 @@ $per_page  = 15;
 $page      = max(1, (int) ($_GET['page'] ?? 1));
 $offset    = ($page - 1) * $per_page;
 
-$pdo = db();
+$db = db();
 
 // Build query
 $where    = [];
 $bindings = [];
 
 if ($q !== '') {
-    $where[]    = "(s.name LIKE ? OR s.name_ja LIKE ? OR s.city LIKE ? OR s.description LIKE ?)";
-    $like       = '%' . $q . '%';
-    $bindings   = array_merge($bindings, [$like, $like, $like, $like]);
+    $where[]  = "(s.name LIKE ? OR s.name_ja LIKE ? OR s.city LIKE ? OR s.description LIKE ?)";
+    $like     = '%' . $q . '%';
+    $bindings = array_merge($bindings, [$like, $like, $like, $like]);
 }
 if ($type) {
     $where[]    = "s.park_type = ?";
@@ -31,9 +31,7 @@ if ($pref) {
 $where_sql = $where ? 'WHERE ' . implode(' AND ', $where) : '';
 
 $count_sql = "SELECT COUNT(*) FROM skateparks s JOIN prefectures p ON p.id = s.prefecture_id $where_sql";
-$stmt_count = $pdo->prepare($count_sql);
-$stmt_count->execute($bindings);
-$total = (int) $stmt_count->fetchColumn();
+$total     = (int) db_run($count_sql, $bindings)->get_result()->fetch_row()[0];
 $total_pages = (int) ceil($total / $per_page);
 
 $results_sql = "
@@ -45,32 +43,28 @@ $results_sql = "
     ORDER BY s.name ASC
     LIMIT $per_page OFFSET $offset
 ";
-$stmt = $pdo->prepare($results_sql);
-$stmt->execute($bindings);
-$results = $stmt->fetchAll();
+$results = db_run($results_sql, $bindings)->get_result()->fetch_all(MYSQLI_ASSOC);
 
 // Tags per result
 $tags_map = [];
 if ($results) {
     $ids = array_column($results, 'slug');
-    // re-fetch with IDs for tag lookup
-    $full_ids_stmt = $pdo->prepare("
-        SELECT s.id, s.slug FROM skateparks s WHERE s.slug IN (" . implode(',', array_fill(0, count($ids), '?')) . ")
-    ");
-    $full_ids_stmt->execute($ids);
-    $id_map = $full_ids_stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+    $rows = db_run(
+        "SELECT s.id, s.slug FROM skateparks s WHERE s.slug IN (" . implode(',', array_fill(0, count($ids), '?')) . ")",
+        $ids
+    )->get_result()->fetch_all(MYSQLI_ASSOC);
+    $id_map = array_column($rows, 'slug', 'id'); // [id => slug]
 
     if ($id_map) {
-        $id_list = implode(',', array_keys($id_map));
-        $tag_rows = $pdo->query("
+        $id_list  = implode(',', array_keys($id_map));
+        $tag_rows = $db->query("
             SELECT st.skatepark_id, t.name, t.slug
             FROM skatepark_tags st JOIN tags t ON t.id = st.tag_id
             WHERE st.skatepark_id IN ($id_list)
-        ")->fetchAll();
+        ")->fetch_all(MYSQLI_ASSOC);
         foreach ($tag_rows as $tr) {
             $tags_map[$tr['skatepark_id']][] = $tr;
         }
-        // Build slug -> id reverse
         $slug_to_id = array_flip($id_map);
     }
 }
@@ -78,7 +72,10 @@ if ($results) {
 $page_title = $q ? 'Search: ' . $q : 'All Skateparks';
 
 // All prefectures for filter
-$all_prefs = $pdo->query("SELECT name FROM prefectures ORDER BY name")->fetchAll(PDO::FETCH_COLUMN);
+$all_prefs = array_column(
+    $db->query("SELECT name FROM prefectures ORDER BY name")->fetch_all(MYSQLI_ASSOC),
+    'name'
+);
 
 require_once __DIR__ . '/includes/header.php';
 ?>
