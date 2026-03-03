@@ -1,30 +1,25 @@
 <?php
 require_once __DIR__ . '/config/db.php';
 
-$pdo  = db();
 $tag  = isset($_GET['tag']) ? trim($_GET['tag']) : '';
 
 if ($tag) {
     // ---- Specific tag/category ----
-    $tag_row = $pdo->prepare("SELECT * FROM tags WHERE slug = ?");
-    $tag_row->execute([$tag]);
-    $tag_row = $tag_row->fetch();
+    $tag_row = db_run("SELECT * FROM tags WHERE slug = ?", [$tag])->get_result()->fetch_assoc();
 
     if (!$tag_row) {
         header('Location: ' . BASE_URL . '/category.php');
         exit;
     }
 
-    $parks = $pdo->prepare("
+    $parks = db_run("
         SELECT s.slug, s.name, s.name_ja, s.city, s.park_type, p.name AS prefecture
         FROM skateparks s
         JOIN prefectures p ON p.id = s.prefecture_id
         JOIN skatepark_tags st ON st.skatepark_id = s.id
         WHERE st.tag_id = ?
         ORDER BY s.name ASC
-    ");
-    $parks->execute([$tag_row['id']]);
-    $parks = $parks->fetchAll();
+    ", [$tag_row['id']])->get_result()->fetch_all(MYSQLI_ASSOC);
 
     $page_title = $tag_row['name'] . ' Skateparks';
     require_once __DIR__ . '/includes/header.php';
@@ -73,13 +68,13 @@ if ($tag) {
 
 } else {
     // ---- All categories ----
-    $all_tags = $pdo->query("
+    $all_tags = db()->query("
         SELECT t.name, t.slug, COUNT(st.skatepark_id) as cnt
         FROM tags t
         LEFT JOIN skatepark_tags st ON st.tag_id = t.id
         GROUP BY t.id
         ORDER BY cnt DESC, t.name ASC
-    ")->fetchAll();
+    ")->fetch_all(MYSQLI_ASSOC);
 
     $page_title = 'Categories';
     require_once __DIR__ . '/includes/header.php';

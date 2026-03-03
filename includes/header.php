@@ -83,7 +83,7 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
                         JOIN skateparks s ON s.prefecture_id = p.id
                         GROUP BY p.region
                         ORDER BY cnt DESC
-                    ")->fetchAll();
+                    ")->fetch_all(MYSQLI_ASSOC);
                     foreach ($regions as $r):
                 ?>
                 <li>
@@ -109,7 +109,7 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
                         GROUP BY t.id
                         ORDER BY cnt DESC
                         LIMIT 8
-                    ")->fetchAll();
+                    ")->fetch_all(MYSQLI_ASSOC);
                     foreach ($cats as $c):
                 ?>
                 <li>

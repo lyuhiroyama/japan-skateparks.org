@@ -1,22 +1,19 @@
 <?php
 require_once __DIR__ . '/../config/db.php';
 
-$pdo = db();
-
 // Handle delete
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
-    $del = $pdo->prepare("DELETE FROM skateparks WHERE id = ?");
-    $del->execute([(int)$_POST['delete_id']]);
+    db_run("DELETE FROM skateparks WHERE id = ?", [(int)$_POST['delete_id']]);
     header('Location: index.php?deleted=1');
     exit;
 }
 
-$parks = $pdo->query("
+$parks = db()->query("
     SELECT s.id, s.slug, s.name, s.name_ja, p.name AS prefecture, s.city, s.park_type, s.featured, s.updated_at
     FROM skateparks s
     JOIN prefectures p ON p.id = s.prefecture_id
     ORDER BY s.name ASC
-")->fetchAll();
+")->fetch_all(MYSQLI_ASSOC);
 
 $page_title = 'Admin — Manage Skateparks';
 require_once __DIR__ . '/../includes/header.php';

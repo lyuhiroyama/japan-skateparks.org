@@ -5,38 +5,38 @@ $page_title     = 'Main Page';
 $meta_description = 'Japan Skateparks — ' . SITE_TAGLINE;
 
 // ---- Data queries ----
-$pdo = db();
+$db = db();
 
 // Stats
-$total_parks     = (int) $pdo->query("SELECT COUNT(*) FROM skateparks")->fetchColumn();
-$total_prefs     = (int) $pdo->query("SELECT COUNT(DISTINCT prefecture_id) FROM skateparks")->fetchColumn();
-$total_indoor    = (int) $pdo->query("SELECT COUNT(*) FROM skateparks WHERE park_type IN ('indoor','both')")->fetchColumn();
-$total_outdoor   = (int) $pdo->query("SELECT COUNT(*) FROM skateparks WHERE park_type IN ('outdoor','both')")->fetchColumn();
+$total_parks   = (int) $db->query("SELECT COUNT(*) FROM skateparks")->fetch_row()[0];
+$total_prefs   = (int) $db->query("SELECT COUNT(DISTINCT prefecture_id) FROM skateparks")->fetch_row()[0];
+$total_indoor  = (int) $db->query("SELECT COUNT(*) FROM skateparks WHERE park_type IN ('indoor','both')")->fetch_row()[0];
+$total_outdoor = (int) $db->query("SELECT COUNT(*) FROM skateparks WHERE park_type IN ('outdoor','both')")->fetch_row()[0];
 
 // Featured article
-$featured = $pdo->query("SELECT s.*, p.name AS prefecture FROM skateparks s JOIN prefectures p ON p.id = s.prefecture_id WHERE s.featured = 1 LIMIT 1")->fetch();
+$featured = $db->query("SELECT s.*, p.name AS prefecture FROM skateparks s JOIN prefectures p ON p.id = s.prefecture_id WHERE s.featured = 1 LIMIT 1")->fetch_assoc();
 if (!$featured) {
-    $featured = $pdo->query("SELECT s.*, p.name AS prefecture FROM skateparks s JOIN prefectures p ON p.id = s.prefecture_id ORDER BY RAND() LIMIT 1")->fetch();
+    $featured = $db->query("SELECT s.*, p.name AS prefecture FROM skateparks s JOIN prefectures p ON p.id = s.prefecture_id ORDER BY RAND() LIMIT 1")->fetch_assoc();
 }
 
 // Recently added / all parks (latest 6)
-$recent = $pdo->query("
+$recent = $db->query("
     SELECT s.*, p.name AS prefecture
     FROM skateparks s
     JOIN prefectures p ON p.id = s.prefecture_id
     ORDER BY s.created_at DESC
     LIMIT 6
-")->fetchAll();
+")->fetch_all(MYSQLI_ASSOC);
 
 // Prefectures with count
-$prefs_with_count = $pdo->query("
+$prefs_with_count = $db->query("
     SELECT p.name, p.name_ja, p.region, COUNT(s.id) as cnt
     FROM prefectures p
     LEFT JOIN skateparks s ON s.prefecture_id = p.id
     GROUP BY p.id
     HAVING cnt > 0
     ORDER BY cnt DESC, p.name ASC
-")->fetchAll();
+")->fetch_all(MYSQLI_ASSOC);
 
 require_once __DIR__ . '/includes/header.php';
 ?>

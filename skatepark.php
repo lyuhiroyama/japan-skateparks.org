@@ -8,17 +8,13 @@ if (!$slug) {
     exit;
 }
 
-$pdo = db();
-
 // Fetch the skatepark
-$stmt = $pdo->prepare("
+$sp = db_run("
     SELECT s.*, p.name AS prefecture, p.name_ja AS prefecture_ja, p.region
     FROM skateparks s
     JOIN prefectures p ON p.id = s.prefecture_id
     WHERE s.slug = ?
-");
-$stmt->execute([$slug]);
-$sp = $stmt->fetch();
+", [$slug])->get_result()->fetch_assoc();
 
 if (!$sp) {
     // 404
@@ -33,25 +29,21 @@ if (!$sp) {
 }
 
 // Fetch tags
-$tag_stmt = $pdo->prepare("
+$tags = db_run("
     SELECT t.name, t.slug
     FROM tags t
     JOIN skatepark_tags st ON st.tag_id = t.id
     WHERE st.skatepark_id = ?
     ORDER BY t.name
-");
-$tag_stmt->execute([$sp['id']]);
-$tags = $tag_stmt->fetchAll();
+", [$sp['id']])->get_result()->fetch_all(MYSQLI_ASSOC);
 
 // Fetch other parks in same prefecture (sidebar)
-$nearby_stmt = $pdo->prepare("
+$nearby = db_run("
     SELECT slug, name FROM skateparks
     WHERE prefecture_id = (SELECT prefecture_id FROM skateparks WHERE id = ?)
     AND id != ?
     LIMIT 5
-");
-$nearby_stmt->execute([$sp['id'], $sp['id']]);
-$nearby = $nearby_stmt->fetchAll();
+", [$sp['id'], $sp['id']])->get_result()->fetch_all(MYSQLI_ASSOC);
 
 $page_title      = $sp['name'];
 $meta_description = mb_substr(strip_tags($sp['description']), 0, 160);
