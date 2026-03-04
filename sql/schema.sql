@@ -247,18 +247,222 @@ NULL,
 'Paid (lesson ¥3,500 per session; monthly school membership ¥9,900 for 3 sessions; free skate via online reservation)',
 'https://www.ramp0.jp',
 35.73400000, 139.80400000,
+0),
+
+('yoyogi-park-urban-sports-park',
+'Yoyogi Park Urban Sports Park',
+'代々木公園屋外アーバンスポーツパーク',
+1, 'Shibuya', '1-1-1 Yoyogi Kamizonocho, Shibuya-ku, Tokyo',
+'Yoyogi Park Urban Sports Park is a free outdoor skate facility set within the expansive grounds of Yoyogi Park in Shibuya-ku, close to Harajuku Station. The park offers a simple but accessible layout focused on flat-ground skating and box obstacles, making it particularly welcoming for beginners and those looking for open space to practise basics. The surrounding parkland provides a relaxed, green environment that sets it apart from more urban skate spots in central Tokyo.',
+'Yoyogi Park was developed on the site of the Washington Heights US military housing complex and the athletes'' village for the 1964 Tokyo Summer Olympics. After the Games the land was returned to Tokyo Metropolitan Government and opened as a public park in 1967. The urban sports area was added in later years as demand for skateboarding facilities in the Harajuku and Shibuya district grew. Section renovations are planned for the facility in coming years.',
+'Flat ground area, box sections',
+'Concrete',
+'outdoor',
+'Dawn to dusk',
+'None',
+'Free',
+NULL,
+35.66990000, 139.69520000,
+0),
+
+('yashio-kita-park-skatepark',
+'Yashio Kita Park Skatepark',
+'八潮北公園スケートボード場',
+1, 'Shinagawa', '1-3-1 Yashio, Shinagawa-ku, Tokyo',
+'Yashio Kita Park Skatepark is a dedicated outdoor skateboarding facility in the waterfront Yashio district of Shinagawa-ku, accessible from Shinagawa Seaside Station. The park features a well-rounded selection of street obstacles including boxes, curved ledges, arcs, banks, and down rails, catering to a range from beginners to intermediate and advanced skaters. A monthly skateboarding school is held on the fourth Saturday of each month, making it a good destination for those learning the sport.',
+'The skatepark was developed by Shinagawa ward as part of the Yashio waterfront area''s public recreational infrastructure. The Yashio district, built on reclaimed land along Tokyo Bay, is home to a number of public sports facilities. The skatepark at Yashio Kita Park has served the local community in this relatively residential corner of Shinagawa-ku, providing a structured, paid facility with management and safety requirements.',
+'Boxes, curved ledges, arcs, banks, down rails',
+'Concrete',
+'outdoor',
+'Daytime hours (seasonal)',
+'None',
+'Adults ¥400 / day; Students ¥200 / day; Shinagawa residents: adults ¥200, students ¥100 / day',
+NULL,
+35.59410000, 139.75080000,
+0),
+
+('raizin-sky-garden',
+'RAIZIN SKY GARDEN by H.L.N.A',
+'レイジンスカイガーデン',
+1, 'Koto', '1-1-10 Aomi, Koto-ku, Tokyo',
+'RAIZIN SKY GARDEN by H.L.N.A is an open-air skatepark and urban sports facility in the Aomi district of Koto-ku, in the heart of the Odaiba waterfront area. The park offers sweeping views across Odaiba and Tokyo Bay and features a comprehensive range of obstacles — curves, manual pads, arcs, banks, ramps, stairsets, down rails, and down ledges — catering to skaters of all levels. Operated by H.L.N.A, the facility runs a regular schedule of professional-led skate schools including girls'' and adult classes, a Kento class, and an H.L.N.A class. An annual membership card is required.',
+'The park was developed in the Aomi district of the Odaiba waterfront, an area that has seen significant urban development since its reclamation in the late twentieth century. Operating under the H.L.N.A brand, the facility became one of the premier commercial outdoor skateparks in the greater Tokyo area, known for the quality of its surface and the breadth of its obstacle selection. The collaboration with energy drink brand RAIZIN in the park''s branding reflects the commercial skate sponsorship culture that has grown alongside skateboarding''s Olympic profile.',
+'Curved ledges, manual pads, arcs, banks, ramps, stairsets, down rails, down ledges',
+'Smooth concrete',
+'outdoor',
+'Varies — check website for current session hours',
+'Varies',
+'Adults (16+) ¥420 / hr; Youth (13–15) ¥210 / hr; Children (under 12) free; Annual membership ¥330',
+'https://hlna.jp/skygarden/',
+35.62580000, 139.77450000,
+0),
+
+('the-yago-skateboard-park',
+'The Yago Skateboard Park',
+'ザヤゴスケートボードパーク',
+1, 'Ota', '3-39-5 Omori-kita, Ota-ku, Tokyo (B1)',
+'The Yago Skateboard Park is a compact underground indoor skatepark located in the basement of a building in Omori-kita, Ota-ku, accessible from Heiwajima and Omori Kaigan stations. The facility houses three ramps of varying sizes — large, medium, and small — all featuring gentle arcs that invite skaters to attempt a wide range of tricks across skill levels. The venue is known for its welcoming atmosphere and the approachable, hands-on teaching style of the manager, referred to affectionately by regulars as ''Baba-chan''.',
+'The Yago was established as a small private indoor ramp park in the Omori area of Ota-ku, a densely residential and industrial ward in southern Tokyo. The park fills a gap in public skateboarding infrastructure in the area and has cultivated a loyal local following since its opening. Equipment rental and periodic skill sessions are available, making it accessible to those new to transition skating.',
+'Large ramp, medium ramp, small ramp',
+'Smooth wood and concrete',
+'indoor',
+'Varies — check Instagram for current hours',
+'Varies',
+'¥1,000 / hr (extension ¥100 per 15 min); Initial registration ¥500',
+'https://theyagoskate.com/',
+35.58360000, 139.73160000,
+0),
+
+('ikebukuro-skatepark',
+'Ikebukuro Skatepark',
+'池袋スケートパーク',
+1, 'Toshima', '1-44-15 Higashi-Ikebukuro, Toshima-ku, Tokyo',
+'Ikebukuro Skatepark is a free outdoor skatepark situated beneath the elevated Ikebukuro Ohashi bridge in Higashi-Ikebukuro, Toshima-ku. The under-highway position provides shade from the summer sun and limited protection from light rain, making it usable in a wider range of weather conditions than a fully exposed park. The facility features curves, manual pads, arcs, and banks suited to street skaters of beginner to intermediate level. A wristband for access must be collected from the nearby HIGHSOX SKATE SHOP, located approximately one kilometre from the park.',
+'A previous skateboarding facility existed at Ikebukuro Eki-mae Park (Ikebukuro Station Front Park) and was relocated and expanded to the current under-bridge location approximately fifty metres further along the elevated structure. The park is one of a small number of free public skateparks along the northern arc of the Yamanote Line, filling an important gap in skateboarding infrastructure for Toshima ward and the wider Ikebukuro area.',
+'Curved ledges, manual pads, arcs, banks',
+'Concrete',
+'outdoor',
+'Dawn to dusk',
+'None',
+'Free (wristband required from HIGHSOX SKATE SHOP)',
+NULL,
+35.72810000, 139.71870000,
+0),
+
+('soshigaya-park-skatepark',
+'Soshigaya Park Skatepark',
+'祖師谷公園スケートパーク',
+1, 'Setagaya', '3-22-19 Kami-Soshigaya, Setagaya-ku, Tokyo',
+'Soshigaya Park Skatepark is a community-managed outdoor skate spot within Soshigaya Park in the western reaches of Setagaya-ku, near Soshigaya-Okura and Chitose-Karasuyama stations. The facility''s obstacles — boxes, rails, banks, arcs, and ramps — are largely built and maintained by the local skateboarding community on a voluntary basis, giving the park a grassroots character distinct from municipally operated facilities. The local crew is known for being welcoming to visitors, and the wooded park setting creates a pleasant skating environment.',
+'The skatepark at Soshigaya Park grew organically from the initiative of local skaters in the Soshigaya and Kitami areas of Setagaya ward, who over time established a DIY presence within the park. Operating informally under local community management, the park''s hours are not fixed and can vary. It represents a model of skate-community-led infrastructure development that is not uncommon in Tokyo''s residential western wards.',
+'Boxes, rails, banks, arcs, ramps (DIY community-built and maintained)',
+'Concrete',
+'outdoor',
+'Irregular (community managed — check local social media)',
+'Irregular',
+'Free',
+NULL,
+35.65110000, 139.58660000,
+0),
+
+('diorama-skate-lounge',
+'DIORAMA Skate Lounge',
+'ジオラマスケートラウンジ',
+1, 'Itabashi', '1-48-8 Itabashi, Itabashi-ku, Tokyo (Dia Palace Shin-Itabashi B1)',
+'DIORAMA Skate Lounge is a stylish underground indoor skatepark and café in Itabashi, Itabashi-ku, located in the basement of the Dia Palace Shin-Itabashi building. The facility combines a well-appointed skate space — featuring boxes, manual pads, banks, ramps, and a bowl — with a café where skaters can rest and socialise after their session. The ramp sizes are considered well-suited to skill progression, earning the park praise for its thoughtful layout. Helmets are not required for adults, though mandatory for children under thirteen.',
+'DIORAMA was established in Itabashi ward to serve the skateboarding community in the northern part of Tokyo''s 23 wards, an area with relatively fewer dedicated skating facilities than the more central or southern wards. The basement location in a residential building is characteristic of Tokyo''s creative approach to finding space for indoor sports in a dense urban environment. The integrated café format has helped DIORAMA cultivate a social, lifestyle-oriented identity within Tokyo''s skateboarding scene.',
+'Boxes, manual pads, banks, ramps, bowl, café',
+'Smooth concrete and wood',
+'indoor',
+'Varies — check website for current session times',
+'Varies',
+'General: ¥1,000 / 2 hr, ¥1,500 / 3 hr (ext. ¥300 / hr); Women & under 18: ¥800 / 2 hr, ¥1,000 / 3 hr; Registration ¥1,000 (first time)',
+NULL,
+35.74700000, 139.71390000,
+0),
+
+('adachi-miyagi-family-park',
+'Adachi Miyagi Family Park',
+'足立区宮城ファミリー公園',
+1, 'Adachi', '2-2 Miyagi, Adachi-ku, Tokyo',
+'Adachi Miyagi Family Park''s skating area is a community-driven outdoor skate spot in the Miyagi district of Adachi-ku, near Adachi-Odai Station on the Tokyo Sakura Tram (Toden Arakawa Line). The facility''s skatable obstacles — boxes, manual pads, arcs, flat rails, and cones — are largely DIY-built and maintained by the local skateboarding community, giving the spot an informal, neighbourhood character. Entry is free and no registration or helmet is required, making it one of the more accessible spots in the eastern 23 wards.',
+'Adachi ward''s Miyagi Family Park has long served as a community recreation space. The skating area emerged informally as local skaters began building and maintaining DIY sections within the park. This pattern of community-led skate infrastructure is common in Adachi-ku, one of Tokyo''s more working-class northern wards, where municipal investment in dedicated skateparks has historically been limited. The local skaters who maintain the spot are known for being welcoming to all levels.',
+'Boxes, manual pads, arcs, flat rails, cones (DIY community-built)',
+'Asphalt and concrete',
+'outdoor',
+'Dawn to dusk',
+'None',
+'Free',
+NULL,
+35.77450000, 139.78470000,
+0),
+
+('8times-corner-store',
+'8Times Corner Store',
+'エイトタイムズコーナーストア',
+1, 'Adachi', '4-12 Shimane, Adachi-ku, Tokyo',
+'8Times Corner Store is a compact private indoor skatepark in the Shimane district of Adachi-ku, operating on a fully reservation-based model via telephone booking. The facility houses two mini ramps of different sizes — a standard mini ramp and a smaller beginner-friendly version — providing a focused transition skating environment. The intimate scale of the park makes it particularly well suited to dedicated practice sessions for skaters working on ramp technique.',
+'8Times Corner Store was established to serve the skateboarding community in western Adachi-ku, near Nishi-Arai Station on the Tobu Daishi Line. The park fills a gap in accessible, affordable indoor transition skating in the eastern 23 wards. Its reservation-only model ensures manageable session sizes and a controlled environment. Equipment is available on-site.',
+'Mini ramp (standard), mini ramp (beginner size)',
+'Smooth concrete and wood',
+'indoor',
+'Varies — reservation required by phone: 050-7561-0399',
+'Varies',
+'¥500 / 2 hr (extension ¥200 / hr)',
+NULL,
+35.78080000, 139.76800000,
+0),
+
+('trinity-b3-park',
+'TRINITY B3 PARK',
+'トリニティB3パーク',
+1, 'Itabashi', '4-12-20 Funado, Itabashi-ku, Tokyo',
+'TRINITY B3 PARK is one of the larger indoor skateparks in northwest Tokyo, located in the basement of a warehouse-style building in Funado, Itabashi-ku, near Nishi-Dai and Ukimafunado stations. The spacious facility features boxes, rails, arcs, banks, bank-to-bank sections, and ramps, with obstacles that can be repositioned to change the park layout. An adjacent pro skate shop, TRINITY, sells hardware and apparel on-site. Monthly skateboarding schools are held for all levels. Helmets are not required for adults but are mandatory for skaters under eighteen.',
+'TRINITY B3 PARK was established as part of the TRINITY skateboarding brand''s presence in Tokyo, combining retail and skating under one roof. Located in Funado, a district in the northwest of Itabashi ward near the Nishi-Dai area, the park was designed to serve the skateboarding community in a part of the city with limited access to public skating facilities. The adjoining shop has helped the venue develop as a hub for the local scene, with regular school programming building a sustained community around the facility.',
+'Boxes, rails, arcs, banks, bank-to-bank section, ramps, repositionable obstacles, adjacent pro shop',
+'Smooth concrete and wood',
+'indoor',
+'Varies — check website for current session times',
+'Varies',
+'General: ¥1,100 / 3 hr or ¥1,500 / day; Under 12: ¥800 / 3 hr or ¥1,000 / day',
+'https://www.trinitytokyo.com/',
+35.78490000, 139.69580000,
+0),
+
+('yumenoshima-skateboard-park',
+'Yumenoshima Skateboard Park',
+'夢の島スケートボードパーク',
+1, 'Koto', '1-1 Yumenoshima, Koto-ku, Tokyo',
+'Yumenoshima Skateboard Park is one of Tokyo''s most comprehensive public outdoor skateparks, situated on the man-made Yumenoshima island in Koto-ku. Opened in November 2022, the park is divided into beginner and intermediate-to-advanced areas and features an unusually broad selection of obstacles for a public facility, including a full vertical ramp — rare among publicly managed parks in Tokyo. The park is informally nicknamed ''Horiume Park'' (堀米パーク) in honour of Japanese professional skateboarder Yuto Horiime, Olympic gold medallist in men''s street at both the Tokyo 2020 and Paris 2024 Games.',
+'Yumenoshima (Dream Island / 夢の島) is an artificial island in eastern Koto-ku, developed on a former waste landfill that was constructed primarily from household rubbish generated by central Tokyo between the 1950s and 1970s. Following its conversion to a public park, the island became home to several sports facilities. Yumenoshima Skateboard Park opened in November 2022 as part of the sustained public investment in skateboarding infrastructure that followed the sport''s Olympic debut at Tokyo 2020. The facility''s nickname referencing Yuto Horiime reflects the cultural impact of his gold medal on skateboarding''s public profile in Japan.',
+'Beginner area, intermediate and advanced area, curved ledges, manual pads, flat rails, down rails, banks, bank-to-banks, arcs, stairsets, knobs, mini ramp, vertical ramp',
+'Concrete',
+'outdoor',
+'Daytime hours (seasonal) — check website',
+'None (wristband from management building required)',
+'Adults ¥450 / day; Junior and high school students ¥150 / day',
+NULL,
+35.64510000, 139.83110000,
+0),
+
+('tsutsumidori-park-skatepark',
+'Tsutsumidori Park Skatepark',
+'堤通公園内交通公園スケートパーク',
+1, 'Sumida', '1-8-1 Tsutsumidori, Sumida-ku, Tokyo',
+'Tsutsumidori Park Skatepark is a provisional outdoor skate spot occupying space beneath an elevated railway structure within Tsutsumidori Park in Sumida-ku, accessible from Hikifune and Higashi-Mukojima stations. The under-track location offers partial protection from light rain, making it usable in conditions that would rule out a fully exposed park. The obstacle selection — boxes, rails, and banks — keeps the layout simple and street-focused. Skaters are expected to pack up sections and remove rubbish after each session as part of the community effort to demonstrate the spot''s viability as a permanent facility.',
+'Tsutsumidori Park Skatepark emerged as a grassroots, provisional skate spot under an elevated railway structure in Sumida ward. Its informal, community-managed status means that continued access depends on skaters maintaining the space responsibly. The under-track location is characteristic of creative space-use in Tokyo''s densely built eastern wards, where dedicated skateparks are scarce. The local community''s commitment to tidying up after sessions reflects the broader effort to convert the spot into a recognised, permanent facility.',
+'Boxes, rails, banks',
+'Asphalt',
+'outdoor',
+'Irregular (community managed)',
+'Irregular',
+'Free',
+NULL,
+35.71830000, 139.82140000,
 0);
 
 -- Tag relationships
 INSERT INTO skatepark_tags (skatepark_id, tag_id) VALUES
-(1, 1), (1, 3), (1, 5), (1, 7), (1, 9),  -- Ariake: Olympic, Outdoor, Street, Park, Professional
-(2, 3), (2, 4), (2, 5),                   -- Shibuya Skate Spot: Outdoor, Free, Street
-(3, 3), (3, 4), (3, 5), (3, 8), (3, 10), -- Komazawa: Outdoor, Free, Street, Beginner Friendly, Public
-(4, 3), (4, 4), (4, 6), (4, 10),         -- Jonanjima: Outdoor, Free, Vert, Public
-(5, 3), (5, 4), (5, 8), (5, 10),         -- Setagaya Park: Outdoor, Free, Beginner Friendly, Public
-(6, 3), (6, 4), (6, 8), (6, 10),         -- Kinuta Park: Outdoor, Free, Beginner Friendly, Public
-(7, 3), (7, 4), (7, 10),                 -- Tamachi: Outdoor, Free, Public
-(8, 3), (8, 5), (8, 7), (8, 8), (8, 9), -- Miyashita: Outdoor, Street, Park, Beginner Friendly, Professional
+(1, 1), (1, 3), (1, 5), (1, 7), (1, 9),   -- Ariake: Olympic, Outdoor, Street, Park, Professional
+(2, 3), (2, 4), (2, 5),                    -- Shibuya Skate Spot: Outdoor, Free, Street
+(3, 3), (3, 4), (3, 5), (3, 8), (3, 10),  -- Komazawa: Outdoor, Free, Street, Beginner Friendly, Public
+(4, 3), (4, 4), (4, 6), (4, 10),          -- Jonanjima: Outdoor, Free, Vert, Public
+(5, 3), (5, 4), (5, 8), (5, 10),          -- Setagaya Park: Outdoor, Free, Beginner Friendly, Public
+(6, 3), (6, 4), (6, 8), (6, 10),          -- Kinuta Park: Outdoor, Free, Beginner Friendly, Public
+(7, 3), (7, 4), (7, 10),                  -- Tamachi: Outdoor, Free, Public
+(8, 3), (8, 5), (8, 7), (8, 8), (8, 9),  -- Miyashita: Outdoor, Street, Park, Beginner Friendly, Professional
 (9, 3), (9, 4), (9, 5), (9, 8), (9, 10), -- Sumida: Outdoor, Free, Street, Beginner Friendly, Public
-(10, 2), (10, 5), (10, 6), (10, 8);      -- Ramp Zero: Indoor, Street, Vert, Beginner Friendly
+(10, 2), (10, 5), (10, 6), (10, 8),       -- Ramp Zero: Indoor, Street, Vert, Beginner Friendly
+(11, 3), (11, 4), (11, 5), (11, 8), (11, 10), -- Yoyogi: Outdoor, Free, Street, Beginner Friendly, Public
+(12, 3), (12, 5), (12, 8), (12, 10),          -- Yashio Kita: Outdoor, Street, Beginner Friendly, Public
+(13, 3), (13, 5), (13, 7), (13, 8), (13, 9),  -- RAIZIN Sky Garden: Outdoor, Street, Park, Beginner Friendly, Professional
+(14, 2), (14, 6), (14, 8),                    -- The Yago: Indoor, Vert, Beginner Friendly
+(15, 3), (15, 4), (15, 5), (15, 8), (15, 10), -- Ikebukuro: Outdoor, Free, Street, Beginner Friendly, Public
+(16, 3), (16, 4), (16, 5), (16, 8), (16, 10), -- Soshigaya: Outdoor, Free, Street, Beginner Friendly, Public
+(17, 2), (17, 5), (17, 6), (17, 7), (17, 8),  -- DIORAMA: Indoor, Street, Vert, Park, Beginner Friendly
+(18, 3), (18, 4), (18, 5), (18, 8), (18, 10), -- Miyagi Family: Outdoor, Free, Street, Beginner Friendly, Public
+(19, 2), (19, 6), (19, 8),                    -- 8Times: Indoor, Vert, Beginner Friendly
+(20, 2), (20, 5), (20, 6), (20, 8),           -- TRINITY B3: Indoor, Street, Vert, Beginner Friendly
+(21, 3), (21, 5), (21, 6), (21, 8), (21, 9), (21, 10), -- Yumenoshima: Outdoor, Street, Vert, Beginner Friendly, Professional, Public
+(22, 3), (22, 4), (22, 5), (22, 8), (22, 10);          -- Tsutsumidori: Outdoor, Free, Street, Beginner Friendly, Public
 
