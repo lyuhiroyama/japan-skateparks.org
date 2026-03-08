@@ -3,6 +3,7 @@
 if (!function_exists('db')) {
     require_once __DIR__ . '/../config/db.php';
 }
+require_once __DIR__ . '/../lang/loader.php';
 
 $search_query = isset($_GET['q']) ? htmlspecialchars(trim($_GET['q'])) : '';
 
@@ -10,12 +11,12 @@ $search_query = isset($_GET['q']) ? htmlspecialchars(trim($_GET['q'])) : '';
 $current_page = basename($_SERVER['PHP_SELF'], '.php');
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?= $GLOBALS['current_lang'] ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= isset($page_title) ? htmlspecialchars($page_title) . ' — ' . SITE_NAME : SITE_NAME ?></title>
-    <meta name="description" content="<?= isset($meta_description) ? htmlspecialchars($meta_description) : SITE_TAGLINE ?>">
+    <title><?= isset($page_title) ? htmlspecialchars($page_title) . ' — ' . __('site_name') : __('site_name') ?></title>
+    <meta name="description" content="<?= isset($meta_description) ? htmlspecialchars($meta_description) : __('site_tagline') ?>">
     <link rel="stylesheet" href="<?= BASE_URL ?>/css/style.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛹</text></svg>">
 </head>
@@ -29,26 +30,34 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
         <a href="<?= BASE_URL ?>/index.php" class="site-logo">
             <span class="logo-icon">🛹</span>
             <span class="logo-text">
-                <span class="logo-title">Japan Skateparks</span>
-                <span class="logo-tagline">The Free Encyclopedia of Japan's Skateparks</span>
+                <span class="logo-title"><?= __('site_name') ?></span>
+                <span class="logo-tagline"><?= __('site_tagline') ?></span>
             </span>
         </a>
 
         <form class="header-search" action="<?= BASE_URL ?>/search.php" method="get" role="search">
+            <?php if (!empty($GLOBALS['current_lang']) && $GLOBALS['current_lang'] !== 'en'): ?>
+            <input type="hidden" name="lang" value="<?= htmlspecialchars($GLOBALS['current_lang']) ?>">
+            <?php endif; ?>
             <input
                 type="search"
                 name="q"
-                placeholder="Search skateparks…"
+                placeholder="<?= __('search_placeholder') ?>"
                 value="<?= $search_query ?>"
-                aria-label="Search">
-            <button type="submit">Search</button>
+                aria-label="<?= __('search_button') ?>">
+            <button type="submit"><?= __('search_button') ?></button>
         </form>
 
         <nav class="header-nav" aria-label="Site navigation">
-            <a href="<?= BASE_URL ?>/index.php">Main Page</a>
-            <a href="<?= BASE_URL ?>/prefecture.php">Prefectures</a>
-            <a href="<?= BASE_URL ?>/category.php">Categories</a>
-            <a href="<?= BASE_URL ?>/admin/index.php">Admin</a>
+            <a href="<?= BASE_URL ?>/index.php<?= $GLOBALS['current_lang'] !== 'en' ? '?lang=' . $GLOBALS['current_lang'] : '' ?>"><?= __('nav_main_page') ?></a>
+            <a href="<?= BASE_URL ?>/prefecture.php<?= $GLOBALS['current_lang'] !== 'en' ? '?lang=' . $GLOBALS['current_lang'] : '' ?>"><?= __('nav_prefectures') ?></a>
+            <a href="<?= BASE_URL ?>/category.php<?= $GLOBALS['current_lang'] !== 'en' ? '?lang=' . $GLOBALS['current_lang'] : '' ?>"><?= __('nav_categories') ?></a>
+            <a href="<?= BASE_URL ?>/admin/index.php"><?= __('nav_admin') ?></a>
+            <span class="lang-switcher">
+                <a href="<?= lang_url('en') ?>" class="<?= $GLOBALS['current_lang'] === 'en' ? 'lang-active' : '' ?>">EN</a>
+                <span>|</span>
+                <a href="<?= lang_url('ja') ?>" class="<?= $GLOBALS['current_lang'] === 'ja' ? 'lang-active' : '' ?>">JA</a>
+            </span>
         </nav>
     </div>
 </header>
@@ -62,20 +71,19 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
     <nav id="sidebar" aria-label="Sidebar navigation">
 
         <div class="sidebar-portlet">
-            <h3>Navigation</h3>
+            <h3><?= __('sidebar_navigation') ?></h3>
             <ul>
-                <li><a href="<?= BASE_URL ?>/index.php" <?= $current_page === 'index' ? 'class="active"' : '' ?>>Main Page</a></li>
-                <li><a href="<?= BASE_URL ?>/prefecture.php" <?= $current_page === 'prefecture' ? 'class="active"' : '' ?>>By Prefecture</a></li>
-                <li><a href="<?= BASE_URL ?>/category.php" <?= $current_page === 'category' ? 'class="active"' : '' ?>>By Category</a></li>
-                <li><a href="<?= BASE_URL ?>/search.php" <?= $current_page === 'search' ? 'class="active"' : '' ?>>All Skateparks</a></li>
+                <li><a href="<?= BASE_URL ?>/index.php" <?= $current_page === 'index' ? 'class="active"' : '' ?>><?= __('nav_main_page') ?></a></li>
+                <li><a href="<?= BASE_URL ?>/prefecture.php" <?= $current_page === 'prefecture' ? 'class="active"' : '' ?>><?= __('sidebar_by_prefecture') ?></a></li>
+                <li><a href="<?= BASE_URL ?>/category.php" <?= $current_page === 'category' ? 'class="active"' : '' ?>><?= __('sidebar_by_category') ?></a></li>
+                <li><a href="<?= BASE_URL ?>/search.php" <?= $current_page === 'search' ? 'class="active"' : '' ?>><?= __('sidebar_all_skateparks') ?></a></li>
             </ul>
         </div>
 
         <div class="sidebar-portlet">
-            <h3>Regions</h3>
+            <h3><?= __('sidebar_regions') ?></h3>
             <ul>
                 <?php
-                // Fetch distinct regions with count
                 try {
                     $regions = db()->query("
                         SELECT p.region, COUNT(s.id) as cnt
@@ -98,7 +106,7 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
         </div>
 
         <div class="sidebar-portlet">
-            <h3>Categories</h3>
+            <h3><?= __('sidebar_categories') ?></h3>
             <ul>
                 <?php
                 try {
@@ -123,9 +131,9 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
         </div>
 
         <div class="sidebar-portlet">
-            <h3>Tools</h3>
+            <h3><?= __('sidebar_tools') ?></h3>
             <ul>
-                <li><a href="<?= BASE_URL ?>/admin/add.php">Add Skatepark</a></li>
+                <li><a href="<?= BASE_URL ?>/admin/add.php"><?= __('sidebar_add_skatepark') ?></a></li>
             </ul>
         </div>
 

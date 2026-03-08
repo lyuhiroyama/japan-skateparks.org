@@ -17,13 +17,12 @@ $sp = db_run("
 ", [$slug])->get_result()->fetch_assoc();
 
 if (!$sp) {
-    // 404
     http_response_code(404);
     $page_title = 'Not Found';
     require_once __DIR__ . '/includes/header.php';
-    echo '<h1 class="article-title">Article not found</h1>';
-    echo '<p>The skatepark "<strong>' . htmlspecialchars($slug) . '</strong>" does not exist in our database.</p>';
-    echo '<p><a href="' . BASE_URL . '/index.php">Return to Main Page</a> or <a href="' . BASE_URL . '/admin/add.php">add this skatepark</a>.</p>';
+    echo '<h1 class="article-title">' . __('not_found_title') . '</h1>';
+    echo '<p>' . sprintf(__('not_found_text'), htmlspecialchars($slug)) . '</p>';
+    echo '<p><a href="' . BASE_URL . '/index.php">' . __('not_found_return') . '</a> or <a href="' . BASE_URL . '/admin/add.php">' . __('not_found_add') . '</a>.</p>';
     require_once __DIR__ . '/includes/footer.php';
     exit;
 }
@@ -45,16 +44,22 @@ $nearby = db_run("
     LIMIT 5
 ", [$sp['id'], $sp['id']])->get_result()->fetch_all(MYSQLI_ASSOC);
 
-$page_title      = $sp['name'];
+$page_title       = $sp['name'];
 $meta_description = mb_substr(strip_tags($sp['description']), 0, 160);
+
+// Resolve translated content — fall back to English if no Japanese version
+$lang = $GLOBALS['current_lang'] ?? 'en';
+$description = ($lang === 'ja' && !empty($sp['description_ja'])) ? $sp['description_ja'] : $sp['description'];
+$history     = ($lang === 'ja' && !empty($sp['history_ja']))     ? $sp['history_ja']     : $sp['history'];
+$facilities  = ($lang === 'ja' && !empty($sp['facilities_ja']))  ? $sp['facilities_ja']  : $sp['facilities'];
 
 require_once __DIR__ . '/includes/header.php';
 ?>
 
 <!-- Page tabs (Wikipedia style) -->
 <div class="page-tabs" style="margin-bottom: .8rem;">
-    <span class="page-tab active">Article</span>
-    <a class="page-tab" href="<?= BASE_URL ?>/admin/edit.php?id=<?= $sp['id'] ?>">Edit</a>
+    <span class="page-tab active"><?= __('tab_article') ?></span>
+    <a class="page-tab" href="<?= BASE_URL ?>/admin/edit.php?id=<?= $sp['id'] ?>"><?= __('tab_edit') ?></a>
     <a class="page-tab" href="<?= BASE_URL ?>/prefecture.php?name=<?= urlencode($sp['prefecture']) ?>"><?= htmlspecialchars($sp['prefecture']) ?></a>
 </div>
 
@@ -78,20 +83,20 @@ require_once __DIR__ . '/includes/header.php';
                 <img src="<?= htmlspecialchars($sp['image_url']) ?>" alt="<?= htmlspecialchars($sp['name']) ?>">
             <?php else: ?>
                 <div class="infobox-image-placeholder">
-                    🛹<span>No image available</span>
+                    🛹<span><?= __('no_image') ?></span>
                 </div>
             <?php endif; ?>
         </div>
         <table>
             <?php if ($sp['name_ja']): ?>
             <tr>
-                <td>Japanese</td>
+                <td><?= __('infobox_japanese') ?></td>
                 <td><?= htmlspecialchars($sp['name_ja']) ?></td>
             </tr>
             <?php endif; ?>
             <?php if ($sp['prefecture']): ?>
             <tr>
-                <td>Prefecture</td>
+                <td><?= __('infobox_prefecture') ?></td>
                 <td>
                     <a href="<?= BASE_URL ?>/prefecture.php?name=<?= urlencode($sp['prefecture']) ?>">
                         <?= htmlspecialchars($sp['prefecture']) ?>
@@ -104,61 +109,61 @@ require_once __DIR__ . '/includes/header.php';
             <?php endif; ?>
             <?php if ($sp['city']): ?>
             <tr>
-                <td>City</td>
+                <td><?= __('infobox_city') ?></td>
                 <td><?= htmlspecialchars($sp['city']) ?></td>
             </tr>
             <?php endif; ?>
             <?php if ($sp['address']): ?>
             <tr>
-                <td>Address</td>
+                <td><?= __('infobox_address') ?></td>
                 <td><?= htmlspecialchars($sp['address']) ?></td>
             </tr>
             <?php endif; ?>
             <?php if ($sp['park_type']): ?>
             <tr>
-                <td>Type</td>
+                <td><?= __('infobox_type') ?></td>
                 <td><?= ucfirst(htmlspecialchars($sp['park_type'])) ?></td>
             </tr>
             <?php endif; ?>
             <?php if ($sp['surface_type']): ?>
             <tr>
-                <td>Surface</td>
+                <td><?= __('infobox_surface') ?></td>
                 <td><?= htmlspecialchars($sp['surface_type']) ?></td>
             </tr>
             <?php endif; ?>
             <?php if ($sp['opening_hours']): ?>
             <tr>
-                <td>Hours</td>
+                <td><?= __('infobox_hours') ?></td>
                 <td><?= nl2br(htmlspecialchars($sp['opening_hours'])) ?></td>
             </tr>
             <?php endif; ?>
             <?php if ($sp['closed_days']): ?>
             <tr>
-                <td>Closed</td>
+                <td><?= __('infobox_closed') ?></td>
                 <td><?= htmlspecialchars($sp['closed_days']) ?></td>
             </tr>
             <?php endif; ?>
             <?php if ($sp['admission_fee']): ?>
             <tr>
-                <td>Admission</td>
+                <td><?= __('infobox_admission') ?></td>
                 <td><?= nl2br(htmlspecialchars($sp['admission_fee'])) ?></td>
             </tr>
             <?php endif; ?>
             <?php if ($sp['phone']): ?>
             <tr>
-                <td>Phone</td>
+                <td><?= __('infobox_phone') ?></td>
                 <td><a href="tel:<?= htmlspecialchars($sp['phone']) ?>"><?= htmlspecialchars($sp['phone']) ?></a></td>
             </tr>
             <?php endif; ?>
             <?php if ($sp['website']): ?>
             <tr>
-                <td>Website</td>
-                <td><a href="<?= htmlspecialchars($sp['website']) ?>" target="_blank" rel="noopener">Official site</a></td>
+                <td><?= __('infobox_website') ?></td>
+                <td><a href="<?= htmlspecialchars($sp['website']) ?>" target="_blank" rel="noopener"><?= __('infobox_official_site') ?></a></td>
             </tr>
             <?php endif; ?>
             <?php if ($sp['latitude'] && $sp['longitude']): ?>
             <tr>
-                <td>Coordinates</td>
+                <td><?= __('infobox_coordinates') ?></td>
                 <td>
                     <a class="map-link"
                        href="https://maps.google.com/?q=<?= $sp['latitude'] ?>,<?= $sp['longitude'] ?>"
@@ -176,21 +181,20 @@ require_once __DIR__ . '/includes/header.php';
          TABLE OF CONTENTS
          ============================================================ -->
     <?php
-    // Build TOC sections dynamically
     $sections = [];
-    if (!empty($sp['description'])) $sections[] = ['id' => 'description', 'title' => 'Overview'];
-    if (!empty($sp['history']))     $sections[] = ['id' => 'history',     'title' => 'History'];
-    if (!empty($sp['facilities']))  $sections[] = ['id' => 'facilities',  'title' => 'Facilities'];
+    if (!empty($description)) $sections[] = ['id' => 'description', 'title' => __('section_overview')];
+    if (!empty($history))     $sections[] = ['id' => 'history',     'title' => __('section_history')];
+    if (!empty($facilities))  $sections[] = ['id' => 'facilities',  'title' => __('section_facilities')];
     if (!empty(trim($sp['opening_hours'] . $sp['admission_fee']))) {
-        $sections[] = ['id' => 'access', 'title' => 'Access and Fees'];
+        $sections[] = ['id' => 'access', 'title' => __('section_access')];
     }
-    if (!empty($nearby)) $sections[] = ['id' => 'see-also', 'title' => 'See Also'];
+    if (!empty($nearby)) $sections[] = ['id' => 'see-also', 'title' => __('section_see_also')];
     ?>
     <?php if (count($sections) >= 3): ?>
     <div class="toc">
-        <div class="toc-title">Contents</div>
+        <div class="toc-title"><?= __('toc_contents') ?></div>
         <ol>
-            <?php foreach ($sections as $i => $sec): ?>
+            <?php foreach ($sections as $sec): ?>
             <li><a href="#<?= $sec['id'] ?>"><?= htmlspecialchars($sec['title']) ?></a></li>
             <?php endforeach; ?>
         </ol>
@@ -200,26 +204,25 @@ require_once __DIR__ . '/includes/header.php';
     <!-- ============================================================
          OVERVIEW / DESCRIPTION
          ============================================================ -->
-    <?php if (!empty($sp['description'])): ?>
-    <p><?= nl2br(htmlspecialchars($sp['description'])) ?></p>
+    <?php if (!empty($description)): ?>
+    <p id="description"><?= nl2br(htmlspecialchars($description)) ?></p>
     <?php endif; ?>
 
     <!-- ============================================================
          HISTORY
          ============================================================ -->
-    <?php if (!empty($sp['history'])): ?>
-    <h2 id="history">History</h2>
-    <p><?= nl2br(htmlspecialchars($sp['history'])) ?></p>
+    <?php if (!empty($history)): ?>
+    <h2 id="history"><?= __('section_history') ?></h2>
+    <p><?= nl2br(htmlspecialchars($history)) ?></p>
     <?php endif; ?>
 
     <!-- ============================================================
          FACILITIES
          ============================================================ -->
-    <?php if (!empty($sp['facilities'])): ?>
-    <h2 id="facilities">Facilities</h2>
+    <?php if (!empty($facilities)): ?>
+    <h2 id="facilities"><?= __('section_facilities') ?></h2>
     <?php
-    // If facilities looks like a comma-separated list, render as list
-    $fac_items = array_filter(array_map('trim', explode(',', $sp['facilities'])));
+    $fac_items = array_filter(array_map('trim', explode(',', $facilities)));
     if (count($fac_items) > 2):
     ?>
     <ul>
@@ -228,7 +231,7 @@ require_once __DIR__ . '/includes/header.php';
         <?php endforeach; ?>
     </ul>
     <?php else: ?>
-    <p><?= nl2br(htmlspecialchars($sp['facilities'])) ?></p>
+    <p><?= nl2br(htmlspecialchars($facilities)) ?></p>
     <?php endif; ?>
     <?php endif; ?>
 
@@ -236,44 +239,44 @@ require_once __DIR__ . '/includes/header.php';
          ACCESS AND FEES
          ============================================================ -->
     <?php if (!empty($sp['opening_hours']) || !empty($sp['admission_fee']) || !empty($sp['address'])): ?>
-    <h2 id="access">Access and Fees</h2>
+    <h2 id="access"><?= __('section_access') ?></h2>
     <table style="border-collapse:collapse;font-size:.88rem;width:auto;min-width:300px;">
         <?php if ($sp['address']): ?>
         <tr>
-            <td style="padding:.3rem .8rem .3rem 0;font-weight:bold;white-space:nowrap;">Address</td>
+            <td style="padding:.3rem .8rem .3rem 0;font-weight:bold;white-space:nowrap;"><?= __('access_address') ?></td>
             <td style="padding:.3rem 0;"><?= htmlspecialchars($sp['address']) ?></td>
         </tr>
         <?php endif; ?>
         <?php if ($sp['opening_hours']): ?>
         <tr>
-            <td style="padding:.3rem .8rem .3rem 0;font-weight:bold;white-space:nowrap;">Opening hours</td>
+            <td style="padding:.3rem .8rem .3rem 0;font-weight:bold;white-space:nowrap;"><?= __('access_hours') ?></td>
             <td style="padding:.3rem 0;"><?= nl2br(htmlspecialchars($sp['opening_hours'])) ?></td>
         </tr>
         <?php endif; ?>
         <?php if ($sp['closed_days']): ?>
         <tr>
-            <td style="padding:.3rem .8rem .3rem 0;font-weight:bold;white-space:nowrap;">Closed days</td>
+            <td style="padding:.3rem .8rem .3rem 0;font-weight:bold;white-space:nowrap;"><?= __('access_closed') ?></td>
             <td style="padding:.3rem 0;"><?= htmlspecialchars($sp['closed_days']) ?></td>
         </tr>
         <?php endif; ?>
         <?php if ($sp['admission_fee']): ?>
         <tr>
-            <td style="padding:.3rem .8rem .3rem 0;font-weight:bold;white-space:nowrap;">Admission</td>
+            <td style="padding:.3rem .8rem .3rem 0;font-weight:bold;white-space:nowrap;"><?= __('access_admission') ?></td>
             <td style="padding:.3rem 0;"><?= nl2br(htmlspecialchars($sp['admission_fee'])) ?></td>
         </tr>
         <?php endif; ?>
         <?php if ($sp['website']): ?>
         <tr>
-            <td style="padding:.3rem .8rem .3rem 0;font-weight:bold;white-space:nowrap;">Website</td>
+            <td style="padding:.3rem .8rem .3rem 0;font-weight:bold;white-space:nowrap;"><?= __('access_website') ?></td>
             <td style="padding:.3rem 0;"><a href="<?= htmlspecialchars($sp['website']) ?>" target="_blank" rel="noopener"><?= htmlspecialchars($sp['website']) ?></a></td>
         </tr>
         <?php endif; ?>
         <?php if ($sp['latitude'] && $sp['longitude']): ?>
         <tr>
-            <td style="padding:.3rem .8rem .3rem 0;font-weight:bold;white-space:nowrap;">Map</td>
+            <td style="padding:.3rem .8rem .3rem 0;font-weight:bold;white-space:nowrap;"><?= __('access_map') ?></td>
             <td style="padding:.3rem 0;">
                 <a href="https://maps.google.com/?q=<?= $sp['latitude'] ?>,<?= $sp['longitude'] ?>" target="_blank" rel="noopener">
-                    View on Google Maps
+                    <?= __('view_on_maps') ?>
                 </a>
             </td>
         </tr>
@@ -285,7 +288,7 @@ require_once __DIR__ . '/includes/header.php';
          SEE ALSO
          ============================================================ -->
     <?php if (!empty($nearby)): ?>
-    <h2 id="see-also">See Also</h2>
+    <h2 id="see-also"><?= __('section_see_also') ?></h2>
     <ul>
         <?php foreach ($nearby as $nb): ?>
         <li><a href="<?= BASE_URL ?>/skatepark.php?slug=<?= urlencode($nb['slug']) ?>"><?= htmlspecialchars($nb['name']) ?></a></li>
@@ -300,7 +303,7 @@ require_once __DIR__ . '/includes/header.php';
      ============================================================ -->
 <?php if (!empty($tags)): ?>
 <div class="article-categories">
-    <strong>Categories:</strong>
+    <strong><?= __('categories_label') ?></strong>
     <a href="<?= BASE_URL ?>/prefecture.php?name=<?= urlencode($sp['prefecture']) ?>"><?= htmlspecialchars($sp['prefecture']) ?> skateparks</a>
     <?php foreach ($tags as $tag): ?>
     · <a href="<?= BASE_URL ?>/category.php?tag=<?= urlencode($tag['slug']) ?>"><?= htmlspecialchars($tag['name']) ?></a>
@@ -310,9 +313,8 @@ require_once __DIR__ . '/includes/header.php';
 
 <!-- Edit link -->
 <p style="font-size:.78rem;color:#999;margin-top:.8rem;">
-    Last updated: <?= date('j F Y', strtotime($sp['updated_at'])) ?> ·
-    <a href="<?= BASE_URL ?>/admin/edit.php?id=<?= $sp['id'] ?>">Edit this article</a>
+    <?= __('last_updated') ?> <?= date('j F Y', strtotime($sp['updated_at'])) ?> ·
+    <a href="<?= BASE_URL ?>/admin/edit.php?id=<?= $sp['id'] ?>"><?= __('edit_article') ?></a>
 </p>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
-

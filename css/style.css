@@ -791,6 +791,37 @@ a.new { color: var(--color-link-red); }
 }
 
 /* ============================================================
+   LANGUAGE SWITCHER
+   ============================================================ */
+.lang-switcher {
+    display: inline-flex;
+    align-items: center;
+    gap: .25rem;
+    font-size: .8rem;
+    margin-left: .25rem;
+    color: var(--color-text-muted);
+}
+.lang-switcher a {
+    color: rgba(255,255,255,.6);
+    text-decoration: none;
+    padding: .1rem .35rem;
+    border-radius: 2px;
+    border: 1px solid transparent;
+}
+.lang-switcher a:hover {
+    background: rgba(255,255,255,.1);
+    color: #fff;
+}
+.lang-switcher a.lang-active {
+    font-weight: bold;
+    color: #fff;
+    border-color: rgba(255,255,255,.5);
+    background: rgba(255,255,255,.15);
+    cursor: default;
+    pointer-events: none;
+}
+
+/* ============================================================
    UTILITIES
    ============================================================ */
 .clearfix::after { content: ''; display: table; clear: both; }

@@ -4,8 +4,9 @@ require_once __DIR__ . '/../config/db.php';
 $errors = [];
 $data   = [
     'name' => '', 'name_ja' => '', 'slug' => '', 'prefecture_id' => '',
-    'city' => '', 'address' => '', 'description' => '', 'history' => '',
-    'facilities' => '', 'surface_type' => '', 'park_type' => 'outdoor',
+    'city' => '', 'address' => '', 'description' => '', 'description_ja' => '',
+    'history' => '', 'history_ja' => '', 'facilities' => '', 'facilities_ja' => '',
+    'surface_type' => '', 'park_type' => 'outdoor',
     'opening_hours' => '', 'closed_days' => '', 'admission_fee' => '',
     'website' => '', 'phone' => '', 'latitude' => '', 'longitude' => '',
     'image_url' => '', 'featured' => 0,
@@ -52,30 +53,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $park_type = in_array($data['park_type'], ['indoor','outdoor','both']) ? $data['park_type'] : 'outdoor';
         db_run("
             INSERT INTO skateparks
-                (slug, name, name_ja, prefecture_id, city, address, description, history,
-                 facilities, surface_type, park_type, opening_hours, closed_days, admission_fee,
+                (slug, name, name_ja, prefecture_id, city, address,
+                 description, description_ja, history, history_ja,
+                 facilities, facilities_ja, surface_type, park_type,
+                 opening_hours, closed_days, admission_fee,
                  website, phone, latitude, longitude, image_url, featured)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ", [
             $data['slug'],
             $data['name'],
-            $data['name_ja']       ?: null,
+            $data['name_ja']          ?: null,
             $data['prefecture_id'],
-            $data['city']          ?: null,
-            $data['address']       ?: null,
+            $data['city']             ?: null,
+            $data['address']          ?: null,
             $data['description'],
-            $data['history']       ?: null,
-            $data['facilities']    ?: null,
-            $data['surface_type']  ?: null,
+            $data['description_ja']   ?: null,
+            $data['history']          ?: null,
+            $data['history_ja']       ?: null,
+            $data['facilities']       ?: null,
+            $data['facilities_ja']    ?: null,
+            $data['surface_type']     ?: null,
             $park_type,
-            $data['opening_hours'] ?: null,
-            $data['closed_days']   ?: null,
-            $data['admission_fee'] ?: null,
-            $data['website']       ?: null,
-            $data['phone']         ?: null,
+            $data['opening_hours']    ?: null,
+            $data['closed_days']      ?: null,
+            $data['admission_fee']    ?: null,
+            $data['website']          ?: null,
+            $data['phone']            ?: null,
             $data['latitude']  !== '' ? (float)$data['latitude']  : null,
             $data['longitude'] !== '' ? (float)$data['longitude'] : null,
-            $data['image_url']     ?: null,
+            $data['image_url']        ?: null,
             (int)$data['featured'],
         ]);
         $new_id = (int) db()->insert_id;
@@ -166,18 +172,32 @@ require_once __DIR__ . '/../includes/header.php';
 
     <h2 style="font-family:var(--font-serif);font-size:1.2rem;font-weight:normal;border-bottom:1px solid #eaecf0;padding-bottom:.3rem;margin:1.2rem 0 1rem;">Article Content</h2>
 
-    <div class="form-group">
-        <label for="description">Overview / Description <span style="color:#d33;">*</span></label>
-        <textarea id="description" name="description" rows="5" placeholder="Introductory description of the skatepark…"><?= htmlspecialchars($data['description']) ?></textarea>
-    </div>
-    <div class="form-group">
-        <label for="history">History</label>
-        <textarea id="history" name="history" rows="4" placeholder="Historical background, when it was built, notable events…"><?= htmlspecialchars($data['history']) ?></textarea>
-    </div>
-    <div class="form-group">
-        <label for="facilities">Facilities</label>
-        <textarea id="facilities" name="facilities" rows="3" placeholder="Comma-separated list or paragraph, e.g. Street course, Bowl, Lockers, Café"><?= htmlspecialchars($data['facilities']) ?></textarea>
-        <small style="color:#777;font-size:.75rem;">Separate items with commas to display as a bullet list.</small>
+    <div class="form-grid">
+        <div class="form-group">
+            <label for="description">Overview / Description (English) <span style="color:#d33;">*</span></label>
+            <textarea id="description" name="description" rows="5" placeholder="Introductory description of the skatepark…"><?= htmlspecialchars($data['description']) ?></textarea>
+        </div>
+        <div class="form-group">
+            <label for="description_ja">Overview / Description (日本語)</label>
+            <textarea id="description_ja" name="description_ja" rows="5" placeholder="スケートパークの概要…"><?= htmlspecialchars($data['description_ja']) ?></textarea>
+        </div>
+        <div class="form-group">
+            <label for="history">History (English)</label>
+            <textarea id="history" name="history" rows="4" placeholder="Historical background, when it was built, notable events…"><?= htmlspecialchars($data['history']) ?></textarea>
+        </div>
+        <div class="form-group">
+            <label for="history_ja">History (日本語)</label>
+            <textarea id="history_ja" name="history_ja" rows="4" placeholder="歴史的背景、建設時期、主なイベントなど…"><?= htmlspecialchars($data['history_ja']) ?></textarea>
+        </div>
+        <div class="form-group">
+            <label for="facilities">Facilities (English)</label>
+            <textarea id="facilities" name="facilities" rows="3" placeholder="Comma-separated list or paragraph, e.g. Street course, Bowl, Lockers, Café"><?= htmlspecialchars($data['facilities']) ?></textarea>
+            <small style="color:#777;font-size:.75rem;">Separate items with commas to display as a bullet list.</small>
+        </div>
+        <div class="form-group">
+            <label for="facilities_ja">Facilities (日本語)</label>
+            <textarea id="facilities_ja" name="facilities_ja" rows="3" placeholder="コンマ区切りまたは文章で記入"><?= htmlspecialchars($data['facilities_ja']) ?></textarea>
+        </div>
     </div>
     <div class="form-group">
         <label for="surface_type">Surface Type</label>

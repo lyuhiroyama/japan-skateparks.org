@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/config/db.php';
 
-$tag  = isset($_GET['tag']) ? trim($_GET['tag']) : '';
+$tag = isset($_GET['tag']) ? trim($_GET['tag']) : '';
 
 if ($tag) {
     // ---- Specific tag/category ----
@@ -25,21 +25,23 @@ if ($tag) {
     require_once __DIR__ . '/includes/header.php';
 ?>
 <div class="page-tabs" style="margin-bottom:.8rem;">
-    <span class="page-tab active">Category</span>
-    <a class="page-tab" href="<?= BASE_URL ?>/category.php">All Categories</a>
+    <span class="page-tab active"><?= __('tab_category') ?></span>
+    <a class="page-tab" href="<?= BASE_URL ?>/category.php"><?= __('all_categories_tab') ?></a>
 </div>
 
-<h1 class="article-title">Category: <?= htmlspecialchars($tag_row['name']) ?></h1>
+<h1 class="article-title"><?= __('category_prefix') ?> <?= htmlspecialchars($tag_row['name']) ?></h1>
 
 <div class="hatnote">
-    <?= count($parks) ?> skatepark<?= count($parks) != 1 ? 's' : '' ?> tagged as
+    <?= count($parks) === 1
+        ? sprintf(__('tagged_singular'), count($parks))
+        : sprintf(__('tagged_plural'),   count($parks)) ?>
     <strong><?= htmlspecialchars($tag_row['name']) ?></strong>.
 </div>
 
 <?php if (empty($parks)): ?>
 <div class="notice-box">
     <span class="notice-icon">📭</span>
-    <span>No skateparks tagged as <?= htmlspecialchars($tag_row['name']) ?> yet.</span>
+    <span><?= __('no_tagged') ?> <?= htmlspecialchars($tag_row['name']) ?> <?= __('no_tagged_yet') ?></span>
 </div>
 <?php else: ?>
 <ul class="article-list">
@@ -79,10 +81,10 @@ if ($tag) {
     $page_title = 'Categories';
     require_once __DIR__ . '/includes/header.php';
 ?>
-<h1 class="article-title">Skatepark Categories</h1>
+<h1 class="article-title"><?= __('skatepark_categories') ?></h1>
 
 <div class="hatnote">
-    Browse skateparks by category. Each skatepark may belong to multiple categories.
+    <?= __('browse_by_category_text') ?>
 </div>
 
 <ul class="article-list" style="margin-top:.5rem;">
@@ -93,7 +95,7 @@ if ($tag) {
         <h4>
             <a href="<?= BASE_URL ?>/category.php?tag=<?= urlencode($t['slug']) ?>"><?= htmlspecialchars($t['name']) ?></a>
         </h4>
-        <p class="article-list-meta"><?= $t['cnt'] ?> skatepark<?= $t['cnt'] != 1 ? 's' : '' ?></p>
+        <p class="article-list-meta"><?= $t['cnt'] ?> <?= $t['cnt'] != 1 ? __('park_plural') : __('park_singular') ?></p>
     </div>
 </li>
 <?php endforeach; ?>
@@ -102,4 +104,3 @@ if ($tag) {
 <?php } ?>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
-
