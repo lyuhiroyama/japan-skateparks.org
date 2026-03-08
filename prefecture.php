@@ -33,26 +33,27 @@ if ($name) {
 ?>
 <!-- Page tabs -->
 <div class="page-tabs" style="margin-bottom:.8rem;">
-    <span class="page-tab active">Category</span>
-    <a class="page-tab" href="<?= BASE_URL ?>/prefecture.php">All Prefectures</a>
+    <span class="page-tab active"><?= __('tab_category') ?></span>
+    <a class="page-tab" href="<?= BASE_URL ?>/prefecture.php"><?= __('all_prefectures_tab') ?></a>
 </div>
 
 <h1 class="article-title">
-    Skateparks in <?= htmlspecialchars($pref['name']) ?>
-    <small><?= htmlspecialchars($pref['name_ja']) ?> · <?= htmlspecialchars($pref['region']) ?> region</small>
+    <?= __('skateparks_in') ?> <?= htmlspecialchars($pref['name']) ?>
+    <small><?= htmlspecialchars($pref['name_ja']) ?> · <?= htmlspecialchars($pref['region']) ?> <?= __('region_suffix') ?></small>
 </h1>
 
 <div class="hatnote">
-    This category lists all skatepark articles for <strong><?= htmlspecialchars($pref['name']) ?></strong>.
-    There <?= $pref['park_count'] == 1 ? 'is' : 'are' ?> currently
-    <strong><?= $pref['park_count'] ?></strong> skatepark<?= $pref['park_count'] != 1 ? 's' : '' ?> in this prefecture.
+    <?= __('pref_hatnote_pre') ?> <strong><?= htmlspecialchars($pref['name']) ?></strong>.
+    <?= $pref['park_count'] == 1
+        ? sprintf(__('pref_hatnote_singular'), $pref['park_count'])
+        : sprintf(__('pref_hatnote_plural'), $pref['park_count']) ?>
 </div>
 
 <?php if (empty($parks)): ?>
 <div class="notice-box">
     <span class="notice-icon">📭</span>
-    <span>No skateparks have been added for <?= htmlspecialchars($pref['name']) ?> yet.
-    <a href="<?= BASE_URL ?>/admin/add.php">Add one!</a></span>
+    <span><?= __('no_parks_for') ?> <?= htmlspecialchars($pref['name']) ?> <?= __('no_parks_yet') ?>
+    <a href="<?= BASE_URL ?>/admin/add.php"><?= __('add_one') ?></a></span>
 </div>
 <?php else: ?>
 <ul class="article-list">
@@ -79,9 +80,9 @@ if ($name) {
 <?php endif; ?>
 
 <div class="article-categories" style="margin-top:1.2rem;">
-    <strong>See also:</strong>
-    <a href="<?= BASE_URL ?>/prefecture.php">All Prefectures</a> ·
-    <a href="<?= BASE_URL ?>/prefecture.php?region=<?= urlencode($pref['region']) ?>"><?= htmlspecialchars($pref['region']) ?> region</a>
+    <strong><?= __('see_also') ?></strong>
+    <a href="<?= BASE_URL ?>/prefecture.php"><?= __('all_prefectures_link') ?></a> ·
+    <a href="<?= BASE_URL ?>/prefecture.php?region=<?= urlencode($pref['region']) ?>"><?= htmlspecialchars($pref['region']) ?> <?= __('region_suffix') ?></a>
 </div>
 
 <?php
@@ -101,8 +102,8 @@ if ($name) {
     require_once __DIR__ . '/includes/header.php';
 ?>
 <h1 class="article-title">
-    <?= htmlspecialchars($region) ?> Region
-    <small>Prefectures and skateparks</small>
+    <?= htmlspecialchars($region) ?> <?= __('region_suffix') ?>
+    <small><?= __('prefectures_and_parks') ?></small>
 </h1>
 
 <div class="prefecture-grid" style="margin-top:.8rem;">
@@ -110,7 +111,7 @@ if ($name) {
 <a class="prefecture-card" href="<?= BASE_URL ?>/prefecture.php?name=<?= urlencode($p['name']) ?>">
     <span class="pref-name-ja"><?= htmlspecialchars($p['name_ja']) ?></span>
     <?= htmlspecialchars($p['name']) ?>
-    <span class="pref-count"><?= $p['cnt'] ?> park<?= $p['cnt'] != 1 ? 's' : '' ?></span>
+    <span class="pref-count"><?= $p['cnt'] ?> <?= $p['cnt'] != 1 ? __('park_plural') : __('park_singular') ?></span>
 </a>
 <?php endforeach; ?>
 </div>
@@ -136,21 +137,21 @@ if ($name) {
     $page_title = 'Skateparks by Prefecture';
     require_once __DIR__ . '/includes/header.php';
 ?>
-<h1 class="article-title">Skateparks by Prefecture</h1>
+<h1 class="article-title"><?= __('skateparks_by_prefecture') ?></h1>
 
 <div class="hatnote">
-    Japan has 47 prefectures. This page lists all prefectures for which skatepark articles exist.
+    <?= __('japan_47_prefs') ?>
 </div>
 
 <?php foreach ($by_region as $reg => $prefs): ?>
-<h2><?= htmlspecialchars($reg) ?> Region</h2>
+<h2><?= htmlspecialchars($reg) ?> <?= __('region_suffix') ?></h2>
 <div class="prefecture-grid">
     <?php foreach ($prefs as $p): ?>
     <a class="prefecture-card" href="<?= BASE_URL ?>/prefecture.php?name=<?= urlencode($p['name']) ?>">
         <span class="pref-name-ja"><?= htmlspecialchars($p['name_ja']) ?></span>
         <?= htmlspecialchars($p['name']) ?>
         <span class="pref-count">
-            <?= $p['cnt'] ?> park<?= $p['cnt'] != 1 ? 's' : '' ?>
+            <?= $p['cnt'] ?> <?= $p['cnt'] != 1 ? __('park_plural') : __('park_singular') ?>
         </span>
     </a>
     <?php endforeach; ?>
@@ -160,4 +161,3 @@ if ($name) {
 <?php } // end if/elseif/else ?>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
-

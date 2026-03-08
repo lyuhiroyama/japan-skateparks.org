@@ -2,7 +2,7 @@
 require_once __DIR__ . '/config/db.php';
 
 $q         = isset($_GET['q']) ? trim($_GET['q']) : '';
-$type      = isset($_GET['type']) ? $_GET['type'] : '';   // indoor / outdoor / both
+$type      = isset($_GET['type']) ? $_GET['type'] : '';
 $pref      = isset($_GET['pref']) ? $_GET['pref'] : '';
 $per_page  = 15;
 $page      = max(1, (int) ($_GET['page'] ?? 1));
@@ -53,7 +53,7 @@ if ($results) {
         "SELECT s.id, s.slug FROM skateparks s WHERE s.slug IN (" . implode(',', array_fill(0, count($ids), '?')) . ")",
         $ids
     )->get_result()->fetch_all(MYSQLI_ASSOC);
-    $id_map = array_column($rows, 'slug', 'id'); // [id => slug]
+    $id_map = array_column($rows, 'slug', 'id');
 
     if ($id_map) {
         $id_list  = implode(',', array_keys($id_map));
@@ -82,16 +82,16 @@ require_once __DIR__ . '/includes/header.php';
 
 <div class="search-header">
     <h1 class="article-title" style="border:none;padding:0;margin:0;">
-        <?= $q ? 'Search results for: <em>' . htmlspecialchars($q) . '</em>' : 'All Skateparks' ?>
+        <?= $q ? __('search_results_for') . ' <em>' . htmlspecialchars($q) . '</em>' : __('all_skateparks') ?>
     </h1>
     <p class="search-count">
         <?php if ($total === 0): ?>
-            No results found.
+            <?= __('no_results') ?>
         <?php else: ?>
-            <?= number_format($total) ?> article<?= $total !== 1 ? 's' : '' ?> found
-            <?= $q ? 'matching "<strong>' . htmlspecialchars($q) . '</strong>"' : '' ?>.
+            <?= $total === 1 ? sprintf(__('articles_found_singular'), $total) : sprintf(__('articles_found_plural'), $total) ?>
+            <?= $q ? ' ' . __('matching') . ' "<strong>' . htmlspecialchars($q) . '</strong>"' : '' ?>.
             <?php if ($total_pages > 1): ?>
-                Showing page <?= $page ?> of <?= $total_pages ?>.
+                <?= sprintf(__('showing_page'), $page, $total_pages) ?>
             <?php endif; ?>
         <?php endif; ?>
     </p>
@@ -101,9 +101,12 @@ require_once __DIR__ . '/includes/header.php';
      FILTER BAR
      ============================================================ -->
 <form method="get" action="search.php" style="margin-bottom:1rem;font-size:.85rem;display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;">
-    <input type="search" name="q" value="<?= htmlspecialchars($q) ?>" placeholder="Search…" style="padding:.3rem .5rem;border:1px solid #a2a9b1;border-radius:2px;">
+    <?php if (!empty($GLOBALS['current_lang']) && $GLOBALS['current_lang'] !== 'en'): ?>
+    <input type="hidden" name="lang" value="<?= htmlspecialchars($GLOBALS['current_lang']) ?>">
+    <?php endif; ?>
+    <input type="search" name="q" value="<?= htmlspecialchars($q) ?>" placeholder="<?= __('search_placeholder') ?>" style="padding:.3rem .5rem;border:1px solid #a2a9b1;border-radius:2px;">
     <select name="pref" style="padding:.3rem .5rem;border:1px solid #a2a9b1;border-radius:2px;">
-        <option value="">All Prefectures</option>
+        <option value=""><?= __('filter_all_prefectures') ?></option>
         <?php foreach ($all_prefs as $p): ?>
         <option value="<?= htmlspecialchars($p) ?>" <?= $pref === $p ? 'selected' : '' ?>>
             <?= htmlspecialchars($p) ?>
@@ -111,14 +114,14 @@ require_once __DIR__ . '/includes/header.php';
         <?php endforeach; ?>
     </select>
     <select name="type" style="padding:.3rem .5rem;border:1px solid #a2a9b1;border-radius:2px;">
-        <option value="">All Types</option>
-        <option value="outdoor" <?= $type === 'outdoor' ? 'selected' : '' ?>>Outdoor</option>
-        <option value="indoor"  <?= $type === 'indoor'  ? 'selected' : '' ?>>Indoor</option>
-        <option value="both"    <?= $type === 'both'    ? 'selected' : '' ?>>Both</option>
+        <option value=""><?= __('filter_all_types') ?></option>
+        <option value="outdoor" <?= $type === 'outdoor' ? 'selected' : '' ?>><?= __('filter_outdoor') ?></option>
+        <option value="indoor"  <?= $type === 'indoor'  ? 'selected' : '' ?>><?= __('filter_indoor') ?></option>
+        <option value="both"    <?= $type === 'both'    ? 'selected' : '' ?>><?= __('filter_both') ?></option>
     </select>
-    <button type="submit" class="btn btn-primary">Filter</button>
+    <button type="submit" class="btn btn-primary"><?= __('filter_button') ?></button>
     <?php if ($q || $type || $pref): ?>
-    <a href="search.php" class="btn btn-secondary">Clear</a>
+    <a href="search.php" class="btn btn-secondary"><?= __('filter_clear') ?></a>
     <?php endif; ?>
 </form>
 
@@ -129,9 +132,9 @@ require_once __DIR__ . '/includes/header.php';
 <div class="notice-box">
     <span class="notice-icon">🔍</span>
     <span>
-        No skateparks found<?= $q ? ' matching "<strong>' . htmlspecialchars($q) . '</strong>"' : '' ?>.
+        <?= __('no_skateparks_found') ?><?= $q ? ' ' . __('matching') . ' "<strong>' . htmlspecialchars($q) . '</strong>"' : '' ?>.
         <?php if ($q): ?>
-        Try a different search term, or <a href="<?= BASE_URL ?>/admin/add.php">add this skatepark</a>.
+        <?= __('try_different') ?> <a href="<?= BASE_URL ?>/admin/add.php"><?= __('add_this_skatepark') ?></a>.
         <?php endif; ?>
     </span>
 </div>
@@ -139,7 +142,7 @@ require_once __DIR__ . '/includes/header.php';
 
 <ul class="article-list">
 <?php foreach ($results as $sp):
-    $sp_id = isset($slug_to_id[$sp['slug']]) ? $slug_to_id[$sp['slug']] : null;
+    $sp_id   = isset($slug_to_id[$sp['slug']]) ? $slug_to_id[$sp['slug']] : null;
     $sp_tags = ($sp_id && isset($tags_map[$sp_id])) ? $tags_map[$sp_id] : [];
 ?>
 <li class="article-list-item">
@@ -176,14 +179,14 @@ require_once __DIR__ . '/includes/header.php';
 <?php if ($total_pages > 1): ?>
 <nav style="margin-top:1rem;display:flex;gap:.3rem;font-size:.85rem;" aria-label="Pagination">
     <?php if ($page > 1): ?>
-    <a class="btn btn-secondary" href="?q=<?= urlencode($q) ?>&pref=<?= urlencode($pref) ?>&type=<?= urlencode($type) ?>&page=<?= $page - 1 ?>">← Previous</a>
+    <a class="btn btn-secondary" href="?q=<?= urlencode($q) ?>&pref=<?= urlencode($pref) ?>&type=<?= urlencode($type) ?>&page=<?= $page - 1 ?>"><?= __('pagination_prev') ?></a>
     <?php endif; ?>
     <?php for ($i = max(1, $page - 3); $i <= min($total_pages, $page + 3); $i++): ?>
     <a class="btn <?= $i === $page ? 'btn-primary' : 'btn-secondary' ?>"
        href="?q=<?= urlencode($q) ?>&pref=<?= urlencode($pref) ?>&type=<?= urlencode($type) ?>&page=<?= $i ?>"><?= $i ?></a>
     <?php endfor; ?>
     <?php if ($page < $total_pages): ?>
-    <a class="btn btn-secondary" href="?q=<?= urlencode($q) ?>&pref=<?= urlencode($pref) ?>&type=<?= urlencode($type) ?>&page=<?= $page + 1 ?>">Next →</a>
+    <a class="btn btn-secondary" href="?q=<?= urlencode($q) ?>&pref=<?= urlencode($pref) ?>&type=<?= urlencode($type) ?>&page=<?= $page + 1 ?>"><?= __('pagination_next') ?></a>
     <?php endif; ?>
 </nav>
 <?php endif; ?>
@@ -191,4 +194,3 @@ require_once __DIR__ . '/includes/header.php';
 <?php endif; ?>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
-

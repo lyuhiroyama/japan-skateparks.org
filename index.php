@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__ . '/config/db.php';
 
-$page_title     = 'Main Page';
-$meta_description = 'Japan Skateparks — ' . SITE_TAGLINE;
+$page_title       = 'Main Page';
+$meta_description = 'Japan Skateparks — ' . 'The Free Encyclopedia of Japan\'s Skateparks';
 
 // ---- Data queries ----
 $db = db();
@@ -46,29 +46,28 @@ require_once __DIR__ . '/includes/header.php';
      ============================================================ -->
 <div class="notice-box">
     <span class="notice-icon">ℹ️</span>
-    <span>Welcome to <strong>Japan Skateparks</strong>, the free encyclopedia of skateboarding parks in Japan.
-    We currently have <strong><?= $total_parks ?></strong> skatepark articles covering
-    <strong><?= $total_prefs ?></strong> prefectures.
-    <a href="<?= BASE_URL ?>/admin/add.php">Help us grow</a> by adding a skatepark near you.</span>
+    <span><?= __('welcome_notice') ?>
+    <?= __('welcome_park_count', $total_parks, $total_prefs) ?>
+    <a href="<?= BASE_URL ?>/admin/add.php"><?= __('help_grow') ?></a> <?= __('help_grow_suffix') ?></span>
 </div>
 
 <!-- Stats bar -->
 <div class="stats-bar">
     <div class="stat-item">
         <span class="stat-number"><?= $total_parks ?></span>
-        <span class="stat-label">Skateparks</span>
+        <span class="stat-label"><?= __('stat_skateparks') ?></span>
     </div>
     <div class="stat-item">
         <span class="stat-number"><?= $total_prefs ?></span>
-        <span class="stat-label">Prefectures</span>
+        <span class="stat-label"><?= __('stat_prefectures') ?></span>
     </div>
     <div class="stat-item">
         <span class="stat-number"><?= $total_outdoor ?></span>
-        <span class="stat-label">Outdoor</span>
+        <span class="stat-label"><?= __('stat_outdoor') ?></span>
     </div>
     <div class="stat-item">
         <span class="stat-number"><?= $total_indoor ?></span>
-        <span class="stat-label">Indoor</span>
+        <span class="stat-label"><?= __('stat_indoor') ?></span>
     </div>
 </div>
 
@@ -77,7 +76,7 @@ require_once __DIR__ . '/includes/header.php';
      ============================================================ -->
 <?php if ($featured): ?>
 <div class="featured-article">
-    <div class="featured-article-header">⭐ Featured Skatepark</div>
+    <div class="featured-article-header"><?= __('featured_skatepark') ?></div>
     <div class="featured-article-body">
         <div class="featured-article-image">
             <?php if (!empty($featured['image_url'])): ?>
@@ -88,8 +87,13 @@ require_once __DIR__ . '/includes/header.php';
         </div>
         <div class="featured-article-text">
             <h3><a href="<?= BASE_URL ?>/skatepark.php?slug=<?= urlencode($featured['slug']) ?>"><?= htmlspecialchars($featured['name']) ?></a></h3>
-            <p><?= htmlspecialchars(mb_substr(strip_tags($featured['description']), 0, 280)) ?>…</p>
-            <p><a href="<?= BASE_URL ?>/skatepark.php?slug=<?= urlencode($featured['slug']) ?>">Read full article →</a></p>
+            <?php
+            $desc = ($GLOBALS['current_lang'] === 'ja' && !empty($featured['description_ja']))
+                ? $featured['description_ja']
+                : $featured['description'];
+            ?>
+            <p><?= htmlspecialchars(mb_substr(strip_tags($desc), 0, 280)) ?>…</p>
+            <p><a href="<?= BASE_URL ?>/skatepark.php?slug=<?= urlencode($featured['slug']) ?>"><?= __('read_full_article') ?></a></p>
         </div>
     </div>
 </div>
@@ -102,7 +106,7 @@ require_once __DIR__ . '/includes/header.php';
 
     <!-- Column 1: Recent articles -->
     <div class="main-box">
-        <div class="main-box-header">🕐 Recently Added</div>
+        <div class="main-box-header"><?= __('recently_added') ?></div>
         <div class="main-box-body">
             <ul class="article-list">
             <?php foreach ($recent as $sp): ?>
@@ -116,24 +120,24 @@ require_once __DIR__ . '/includes/header.php';
             </li>
             <?php endforeach; ?>
             </ul>
-            <p class="mt-1"><a href="<?= BASE_URL ?>/search.php">View all skateparks →</a></p>
+            <p class="mt-1"><a href="<?= BASE_URL ?>/search.php"><?= __('view_all_skateparks') ?></a></p>
         </div>
     </div>
 
     <!-- Column 2: Browse by prefecture -->
     <div class="main-box">
-        <div class="main-box-header">🗾 Browse by Prefecture</div>
+        <div class="main-box-header"><?= __('browse_by_prefecture') ?></div>
         <div class="main-box-body">
             <div class="prefecture-grid">
             <?php foreach ($prefs_with_count as $pref): ?>
                 <a class="prefecture-card" href="<?= BASE_URL ?>/prefecture.php?name=<?= urlencode($pref['name']) ?>">
                     <span class="pref-name-ja"><?= htmlspecialchars($pref['name_ja']) ?></span>
                     <?= htmlspecialchars($pref['name']) ?>
-                    <span class="pref-count"><?= $pref['cnt'] ?> park<?= $pref['cnt'] > 1 ? 's' : '' ?></span>
+                    <span class="pref-count"><?= $pref['cnt'] ?> <?= $pref['cnt'] > 1 ? __('park_plural') : __('park_singular') ?></span>
                 </a>
             <?php endforeach; ?>
             </div>
-            <p class="mt-1"><a href="<?= BASE_URL ?>/prefecture.php">All prefectures →</a></p>
+            <p class="mt-1"><a href="<?= BASE_URL ?>/prefecture.php"><?= __('all_prefectures_arrow') ?></a></p>
         </div>
     </div>
 
@@ -143,26 +147,13 @@ require_once __DIR__ . '/includes/header.php';
      ABOUT BOX
      ============================================================ -->
 <div class="main-box" style="margin-top:1.2rem;">
-    <div class="main-box-header">📖 About Japan Skateparks</div>
+    <div class="main-box-header"><?= __('about_title') ?></div>
     <div class="main-box-body">
-        <p>
-            <strong>Japan Skateparks</strong> is a free, community-driven encyclopedia documenting every
-            skatepark in Japan. Our goal is to compile comprehensive, accurate information about each
-            facility — from Olympic-grade venues to neighbourhood DIY spots.
-        </p>
-        <p>
-            Inspired by the model of Wikipedia, all information is freely accessible and community-contributed.
-            Whether you are planning a skate trip, looking for a local park, or interested in the history
-            of skateboarding infrastructure in Japan, this is your reference.
-        </p>
-        <p>
-            Skateboarding was added to the Olympic programme at the <strong>Tokyo 2020 Games</strong>,
-            marking a milestone for the sport in Japan. Since then, investment in skateboarding
-            infrastructure has grown significantly across the country.
-        </p>
-        <p><a href="<?= BASE_URL ?>/admin/add.php">Contribute a skatepark</a> | <a href="<?= BASE_URL ?>/search.php">Browse all articles</a></p>
+        <p><?= __('about_p1') ?></p>
+        <p><?= __('about_p2') ?></p>
+        <p><?= __('about_p3') ?></p>
+        <p><a href="<?= BASE_URL ?>/admin/add.php"><?= __('contribute_skatepark') ?></a> | <a href="<?= BASE_URL ?>/search.php"><?= __('browse_all_articles') ?></a></p>
     </div>
 </div>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
-
