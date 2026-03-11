@@ -57,14 +57,17 @@ if ($name) {
 </div>
 <?php else: ?>
 <ul class="article-list">
-<?php foreach ($parks as $sp): ?>
+<?php foreach ($parks as $sp):
+    $display = ($GLOBALS['current_lang'] === 'ja' && !empty($sp['name_ja'])) ? $sp['name_ja'] : $sp['name'];
+    $alt     = ($GLOBALS['current_lang'] === 'ja') ? $sp['name'] : ($sp['name_ja'] ?? '');
+?>
 <li class="article-list-item">
     <div class="article-list-icon">🛹</div>
     <div class="article-list-info">
         <h4>
-            <a href="<?= BASE_URL ?>/skatepark.php?slug=<?= urlencode($sp['slug']) ?>"><?= htmlspecialchars($sp['name']) ?></a>
-            <?php if ($sp['name_ja']): ?>
-            <small style="font-size:.78rem;color:#777;font-weight:normal;"> — <?= htmlspecialchars($sp['name_ja']) ?></small>
+            <a href="<?= BASE_URL ?>/skatepark.php?slug=<?= urlencode($sp['slug']) ?>"><?= htmlspecialchars($display) ?></a>
+            <?php if ($alt && $alt !== $display): ?>
+            <small style="font-size:.78rem;color:#777;font-weight:normal;"> — <?= htmlspecialchars($alt) ?></small>
             <?php endif; ?>
         </h4>
         <p class="article-list-meta">

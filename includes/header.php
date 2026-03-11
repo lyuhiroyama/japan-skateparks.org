@@ -53,12 +53,12 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
             <a href="<?= BASE_URL ?>/prefecture.php<?= $GLOBALS['current_lang'] !== 'en' ? '?lang=' . $GLOBALS['current_lang'] : '' ?>"><?= __('nav_prefectures') ?></a>
             <a href="<?= BASE_URL ?>/category.php<?= $GLOBALS['current_lang'] !== 'en' ? '?lang=' . $GLOBALS['current_lang'] : '' ?>"><?= __('nav_categories') ?></a>
             <a href="<?= BASE_URL ?>/admin/index.php"><?= __('nav_admin') ?></a>
-            <span class="lang-switcher">
-                <a href="<?= lang_url('en') ?>" class="<?= $GLOBALS['current_lang'] === 'en' ? 'lang-active' : '' ?>">EN</a>
-                <span>|</span>
-                <a href="<?= lang_url('ja') ?>" class="<?= $GLOBALS['current_lang'] === 'ja' ? 'lang-active' : '' ?>">JA</a>
-            </span>
         </nav>
+        <span class="lang-switcher">
+            <a href="<?= lang_url('en') ?>" class="<?= $GLOBALS['current_lang'] === 'en' ? 'lang-active' : '' ?>">EN</a>
+            <span>|</span>
+            <a href="<?= lang_url('ja') ?>" class="<?= $GLOBALS['current_lang'] === 'ja' ? 'lang-active' : '' ?>">JA</a>
+        </span>
     </div>
 </header>
 
