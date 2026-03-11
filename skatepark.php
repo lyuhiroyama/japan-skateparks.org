@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/config/db.php';
+require_once __DIR__ . '/lang/loader.php';
 
 $slug = isset($_GET['slug']) ? trim($_GET['slug']) : '';
 
@@ -44,14 +45,15 @@ $nearby = db_run("
     LIMIT 5
 ", [$sp['id'], $sp['id']])->get_result()->fetch_all(MYSQLI_ASSOC);
 
-$page_title       = $sp['name'];
-$meta_description = mb_substr(strip_tags($sp['description']), 0, 160);
-
 // Resolve translated content — fall back to English if no Japanese version
-$lang = $GLOBALS['current_lang'] ?? 'en';
-$description = ($lang === 'ja' && !empty($sp['description_ja'])) ? $sp['description_ja'] : $sp['description'];
-$history     = ($lang === 'ja' && !empty($sp['history_ja']))     ? $sp['history_ja']     : $sp['history'];
-$facilities  = ($lang === 'ja' && !empty($sp['facilities_ja']))  ? $sp['facilities_ja']  : $sp['facilities'];
+$lang        = $GLOBALS['current_lang'] ?? 'en';
+$display_name = ($lang === 'ja' && !empty($sp['name_ja'])) ? $sp['name_ja'] : $sp['name'];
+$description  = ($lang === 'ja' && !empty($sp['description_ja'])) ? $sp['description_ja'] : $sp['description'];
+$history      = ($lang === 'ja' && !empty($sp['history_ja']))     ? $sp['history_ja']     : $sp['history'];
+$facilities   = ($lang === 'ja' && !empty($sp['facilities_ja']))  ? $sp['facilities_ja']  : $sp['facilities'];
+
+$page_title       = $display_name;
+$meta_description = mb_substr(strip_tags($description), 0, 160);
 
 require_once __DIR__ . '/includes/header.php';
 ?>
@@ -65,9 +67,13 @@ require_once __DIR__ . '/includes/header.php';
 
 <!-- Article title -->
 <h1 class="article-title">
-    <?= htmlspecialchars($sp['name']) ?>
-    <?php if ($sp['name_ja']): ?>
-    <small><?= htmlspecialchars($sp['name_ja']) ?></small>
+    <?= htmlspecialchars($display_name) ?>
+    <?php
+    // Show the alternate name in small — English when in Japanese mode, Japanese when in English mode
+    $alt_name = ($lang === 'ja') ? $sp['name'] : ($sp['name_ja'] ?? '');
+    if ($alt_name && $alt_name !== $display_name):
+    ?>
+    <small><?= htmlspecialchars($alt_name) ?></small>
     <?php endif; ?>
 </h1>
 
@@ -77,7 +83,7 @@ require_once __DIR__ . '/includes/header.php';
          INFOBOX
          ============================================================ -->
     <div class="infobox">
-        <div class="infobox-title"><?= htmlspecialchars($sp['name']) ?></div>
+        <div class="infobox-title"><?= htmlspecialchars($display_name) ?></div>
         <div class="infobox-image">
             <?php if (!empty($sp['image_url'])): ?>
                 <img src="<?= htmlspecialchars($sp['image_url']) ?>" alt="<?= htmlspecialchars($sp['name']) ?>">

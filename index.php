@@ -86,7 +86,8 @@ require_once __DIR__ . '/includes/header.php';
             <?php endif; ?>
         </div>
         <div class="featured-article-text">
-            <h3><a href="<?= BASE_URL ?>/skatepark.php?slug=<?= urlencode($featured['slug']) ?>"><?= htmlspecialchars($featured['name']) ?></a></h3>
+            <?php $feat_display = ($GLOBALS['current_lang'] === 'ja' && !empty($featured['name_ja'])) ? $featured['name_ja'] : $featured['name']; ?>
+            <h3><a href="<?= BASE_URL ?>/skatepark.php?slug=<?= urlencode($featured['slug']) ?>"><?= htmlspecialchars($feat_display) ?></a></h3>
             <?php
             $desc = ($GLOBALS['current_lang'] === 'ja' && !empty($featured['description_ja']))
                 ? $featured['description_ja']
@@ -109,11 +110,13 @@ require_once __DIR__ . '/includes/header.php';
         <div class="main-box-header"><?= __('recently_added') ?></div>
         <div class="main-box-body">
             <ul class="article-list">
-            <?php foreach ($recent as $sp): ?>
+            <?php foreach ($recent as $sp):
+                $display = ($GLOBALS['current_lang'] === 'ja' && !empty($sp['name_ja'])) ? $sp['name_ja'] : $sp['name'];
+            ?>
             <li class="article-list-item">
                 <div class="article-list-icon">🛹</div>
                 <div class="article-list-info">
-                    <h4><a href="<?= BASE_URL ?>/skatepark.php?slug=<?= urlencode($sp['slug']) ?>"><?= htmlspecialchars($sp['name']) ?></a></h4>
+                    <h4><a href="<?= BASE_URL ?>/skatepark.php?slug=<?= urlencode($sp['slug']) ?>"><?= htmlspecialchars($display) ?></a></h4>
                     <p><?= htmlspecialchars($sp['prefecture']) ?> · <?= htmlspecialchars($sp['city'] ?? '') ?> ·
                         <?= ucfirst($sp['park_type']) ?></p>
                 </div>
