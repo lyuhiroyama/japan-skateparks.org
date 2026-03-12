@@ -4,6 +4,10 @@ config/db.php
 # Uploaded files
 uploads/
 
+# Skatepark images (uploaded separately to VPS via scp)
+images/skateparks/*
+!images/skateparks/.gitkeep
+
 # OS junk
 .DS_Store
 Thumbs.db
