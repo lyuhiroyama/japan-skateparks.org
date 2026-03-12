@@ -1,7 +1,7 @@
 <?php
 return [
     // Site identity
-    'site_name'                  => 'ジャパンスケートパークス',
+    'site_name'                  => '日本スケートパークWiki',
     'site_tagline'               => '日本のスケートパーク無料百科事典',
     'lang_switch_en'             => 'EN',
     'lang_switch_ja'             => 'JA',
@@ -136,7 +136,7 @@ return [
     // prefecture.php
     'tab_category'               => 'カテゴリー',
     'all_prefectures_tab'        => '全都道府県',
-    'skateparks_in'              => 'のスケートパーク',
+    'skateparks_in'              => '%sのスケートパーク',
     'pref_hatnote_pre'           => 'このカテゴリーには',
     'pref_hatnote_singular'      => 'この都道府県には現在<strong>%d</strong>件のスケートパークがあります。',
     'pref_hatnote_plural'        => 'この都道府県には現在<strong>%d</strong>件のスケートパークがあります。',

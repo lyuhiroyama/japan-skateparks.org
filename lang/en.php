@@ -136,7 +136,7 @@ return [
     // prefecture.php
     'tab_category'               => 'Category',
     'all_prefectures_tab'        => 'All Prefectures',
-    'skateparks_in'              => 'Skateparks in',
+    'skateparks_in'              => 'Skateparks in %s',
     'pref_hatnote_pre'           => 'This category lists all skatepark articles for',
     'pref_hatnote_singular'      => 'There is currently <strong>%d</strong> skatepark in this prefecture.',
     'pref_hatnote_plural'        => 'There are currently <strong>%d</strong> skateparks in this prefecture.',
