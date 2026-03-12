@@ -38,7 +38,7 @@ if ($name) {
 </div>
 
 <h1 class="article-title">
-    <?= __('skateparks_in') ?> <?= htmlspecialchars($pref['name']) ?>
+    <?= sprintf(__('skateparks_in'), htmlspecialchars($pref['name'])) ?>
     <small><?= htmlspecialchars($pref['name_ja']) ?> · <?= htmlspecialchars($pref['region']) ?> <?= __('region_suffix') ?></small>
 </h1>
 
