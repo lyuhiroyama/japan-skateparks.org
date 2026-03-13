@@ -46,11 +46,16 @@ $nearby = db_run("
 ", [$sp['id'], $sp['id']])->get_result()->fetch_all(MYSQLI_ASSOC);
 
 // Resolve translated content — fall back to English if no Japanese version
-$lang        = $GLOBALS['current_lang'] ?? 'en';
-$display_name = ($lang === 'ja' && !empty($sp['name_ja'])) ? $sp['name_ja'] : $sp['name'];
-$description  = ($lang === 'ja' && !empty($sp['description_ja'])) ? $sp['description_ja'] : $sp['description'];
-$history      = ($lang === 'ja' && !empty($sp['history_ja']))     ? $sp['history_ja']     : $sp['history'];
-$facilities   = ($lang === 'ja' && !empty($sp['facilities_ja']))  ? $sp['facilities_ja']  : $sp['facilities'];
+$lang          = $GLOBALS['current_lang'] ?? 'en';
+$display_name  = ($lang === 'ja' && !empty($sp['name_ja']))          ? $sp['name_ja']          : $sp['name'];
+$description   = ($lang === 'ja' && !empty($sp['description_ja']))   ? $sp['description_ja']   : $sp['description'];
+$history       = ($lang === 'ja' && !empty($sp['history_ja']))       ? $sp['history_ja']       : $sp['history'];
+$facilities    = ($lang === 'ja' && !empty($sp['facilities_ja']))    ? $sp['facilities_ja']    : $sp['facilities'];
+$city          = ($lang === 'ja' && !empty($sp['city_ja']))          ? $sp['city_ja']          : $sp['city'];
+$address       = ($lang === 'ja' && !empty($sp['address_ja']))       ? $sp['address_ja']       : $sp['address'];
+$surface_type  = ($lang === 'ja' && !empty($sp['surface_type_ja']))  ? $sp['surface_type_ja']  : $sp['surface_type'];
+$closed_days   = ($lang === 'ja' && !empty($sp['closed_days_ja']))   ? $sp['closed_days_ja']   : $sp['closed_days'];
+$admission_fee = ($lang === 'ja' && !empty($sp['admission_fee_ja'])) ? $sp['admission_fee_ja'] : $sp['admission_fee'];
 
 $page_title       = $display_name;
 $meta_description = mb_substr(strip_tags($description), 0, 160);
@@ -113,28 +118,28 @@ require_once __DIR__ . '/includes/header.php';
                 </td>
             </tr>
             <?php endif; ?>
-            <?php if ($sp['city']): ?>
+            <?php if ($city): ?>
             <tr>
                 <td><?= __('infobox_city') ?></td>
-                <td><?= htmlspecialchars($sp['city']) ?></td>
+                <td><?= htmlspecialchars($city) ?></td>
             </tr>
             <?php endif; ?>
-            <?php if ($sp['address']): ?>
+            <?php if ($address): ?>
             <tr>
                 <td><?= __('infobox_address') ?></td>
-                <td><?= htmlspecialchars($sp['address']) ?></td>
+                <td><?= htmlspecialchars($address) ?></td>
             </tr>
             <?php endif; ?>
             <?php if ($sp['park_type']): ?>
             <tr>
                 <td><?= __('infobox_type') ?></td>
-                <td><?= ucfirst(htmlspecialchars($sp['park_type'])) ?></td>
+                <td><?= __('park_type_' . $sp['park_type']) ?></td>
             </tr>
             <?php endif; ?>
-            <?php if ($sp['surface_type']): ?>
+            <?php if ($surface_type): ?>
             <tr>
                 <td><?= __('infobox_surface') ?></td>
-                <td><?= htmlspecialchars($sp['surface_type']) ?></td>
+                <td><?= htmlspecialchars($surface_type) ?></td>
             </tr>
             <?php endif; ?>
             <?php if ($sp['opening_hours']): ?>
@@ -143,16 +148,16 @@ require_once __DIR__ . '/includes/header.php';
                 <td><?= nl2br(htmlspecialchars($sp['opening_hours'])) ?></td>
             </tr>
             <?php endif; ?>
-            <?php if ($sp['closed_days']): ?>
+            <?php if ($closed_days): ?>
             <tr>
                 <td><?= __('infobox_closed') ?></td>
-                <td><?= htmlspecialchars($sp['closed_days']) ?></td>
+                <td><?= htmlspecialchars($closed_days) ?></td>
             </tr>
             <?php endif; ?>
-            <?php if ($sp['admission_fee']): ?>
+            <?php if ($admission_fee): ?>
             <tr>
                 <td><?= __('infobox_admission') ?></td>
-                <td><?= nl2br(htmlspecialchars($sp['admission_fee'])) ?></td>
+                <td><?= nl2br(htmlspecialchars($admission_fee)) ?></td>
             </tr>
             <?php endif; ?>
             <?php if ($sp['phone']): ?>

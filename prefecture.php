@@ -72,7 +72,7 @@ if ($name) {
         </h4>
         <p class="article-list-meta">
             <?= htmlspecialchars($sp['city'] ?? '') ?>
-            · <?= ucfirst(htmlspecialchars($sp['park_type'])) ?>
+            · <?= __('park_type_' . $sp['park_type']) ?>
             <?= $sp['surface_type'] ? '· ' . htmlspecialchars($sp['surface_type']) : '' ?>
             <?= $sp['admission_fee'] ? '· ' . htmlspecialchars(mb_substr($sp['admission_fee'], 0, 50)) : '' ?>
         </p>

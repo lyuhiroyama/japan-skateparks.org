@@ -118,7 +118,7 @@ require_once __DIR__ . '/includes/header.php';
                 <div class="article-list-info">
                     <h4><a href="<?= BASE_URL ?>/skatepark.php?slug=<?= urlencode($sp['slug']) ?>"><?= htmlspecialchars($display) ?></a></h4>
                     <p><?= htmlspecialchars($sp['prefecture']) ?> · <?= htmlspecialchars($sp['city'] ?? '') ?> ·
-                        <?= ucfirst($sp['park_type']) ?></p>
+                        <?= __('park_type_' . $sp['park_type']) ?></p>
                 </div>
             </li>
             <?php endforeach; ?>
