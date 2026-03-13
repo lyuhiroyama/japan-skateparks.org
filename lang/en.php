@@ -83,6 +83,9 @@ return [
     'infobox_official_site'      => 'Official site',
     'infobox_coordinates'        => 'Coordinates',
     'no_image'                   => 'No image available',
+    'park_type_outdoor'          => 'Outdoor',
+    'park_type_indoor'           => 'Indoor',
+    'park_type_both'             => 'Both',
 
     // skatepark.php — TOC & sections
     'toc_contents'               => 'Contents',

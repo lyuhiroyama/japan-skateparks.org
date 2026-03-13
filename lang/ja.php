@@ -83,6 +83,9 @@ return [
     'infobox_official_site'      => '公式サイト',
     'infobox_coordinates'        => '座標',
     'no_image'                   => '画像なし',
+    'park_type_outdoor'          => '屋外',
+    'park_type_indoor'           => '屋内',
+    'park_type_both'             => '屋外・屋内',
 
     // skatepark.php — TOC & sections
     'toc_contents'               => '目次',

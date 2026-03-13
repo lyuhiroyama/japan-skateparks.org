@@ -29,11 +29,11 @@ $errors = [];
 $data   = $sp; // pre-fill from DB
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $fields = ['name','name_ja','slug','prefecture_id','city','address',
+    $fields = ['name','name_ja','slug','prefecture_id','city','city_ja','address','address_ja',
                'description','description_ja','history','history_ja',
-               'facilities','facilities_ja','surface_type','park_type','opening_hours',
-               'closed_days','admission_fee','website','phone','latitude','longitude',
-               'image_url'];
+               'facilities','facilities_ja','surface_type','surface_type_ja','park_type','opening_hours',
+               'closed_days','closed_days_ja','admission_fee','admission_fee_ja',
+               'website','phone','latitude','longitude','image_url'];
     foreach ($fields as $k) {
         $data[$k] = isset($_POST[$k]) ? trim($_POST[$k]) : '';
     }
@@ -58,38 +58,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         db_run("
             UPDATE skateparks SET
                 slug=?, name=?, name_ja=?, prefecture_id=?,
-                city=?, address=?,
+                city=?, city_ja=?, address=?, address_ja=?,
                 description=?, description_ja=?,
                 history=?, history_ja=?,
                 facilities=?, facilities_ja=?,
-                surface_type=?, park_type=?,
-                opening_hours=?, closed_days=?, admission_fee=?,
+                surface_type=?, surface_type_ja=?, park_type=?,
+                opening_hours=?, closed_days=?, closed_days_ja=?,
+                admission_fee=?, admission_fee_ja=?,
                 website=?, phone=?, latitude=?, longitude=?,
                 image_url=?, featured=?
             WHERE id=?
         ", [
             $data['slug'],
             $data['name'],
-            $data['name_ja']          ?: null,
+            $data['name_ja']           ?: null,
             $data['prefecture_id'],
-            $data['city']             ?: null,
-            $data['address']          ?: null,
+            $data['city']              ?: null,
+            $data['city_ja']           ?: null,
+            $data['address']           ?: null,
+            $data['address_ja']        ?: null,
             $data['description'],
-            $data['description_ja']   ?: null,
-            $data['history']          ?: null,
-            $data['history_ja']       ?: null,
-            $data['facilities']       ?: null,
-            $data['facilities_ja']    ?: null,
-            $data['surface_type']     ?: null,
+            $data['description_ja']    ?: null,
+            $data['history']           ?: null,
+            $data['history_ja']        ?: null,
+            $data['facilities']        ?: null,
+            $data['facilities_ja']     ?: null,
+            $data['surface_type']      ?: null,
+            $data['surface_type_ja']   ?: null,
             $park_type,
-            $data['opening_hours']    ?: null,
-            $data['closed_days']      ?: null,
-            $data['admission_fee']    ?: null,
-            $data['website']          ?: null,
-            $data['phone']            ?: null,
+            $data['opening_hours']     ?: null,
+            $data['closed_days']       ?: null,
+            $data['closed_days_ja']    ?: null,
+            $data['admission_fee']     ?: null,
+            $data['admission_fee_ja']  ?: null,
+            $data['website']           ?: null,
+            $data['phone']             ?: null,
             $data['latitude']  !== '' ? (float)$data['latitude']  : null,
             $data['longitude'] !== '' ? (float)$data['longitude'] : null,
-            $data['image_url']        ?: null,
+            $data['image_url']         ?: null,
             (int)$data['featured'],
             $id,
         ]);
@@ -167,6 +173,10 @@ require_once __DIR__ . '/../includes/header.php';
             <input type="text" id="city" name="city" value="<?= htmlspecialchars($data['city'] ?? '') ?>">
         </div>
         <div class="form-group">
+            <label for="city_ja">City / Town (日本語)</label>
+            <input type="text" id="city_ja" name="city_ja" value="<?= htmlspecialchars($data['city_ja'] ?? '') ?>" placeholder="e.g. 墨田区">
+        </div>
+        <div class="form-group">
             <label for="park_type">Park Type</label>
             <select id="park_type" name="park_type">
                 <option value="outdoor" <?= ($data['park_type'] ?? '') === 'outdoor' ? 'selected' : '' ?>>Outdoor</option>
@@ -177,6 +187,10 @@ require_once __DIR__ . '/../includes/header.php';
         <div class="form-group full-width">
             <label for="address">Address</label>
             <input type="text" id="address" name="address" value="<?= htmlspecialchars($data['address'] ?? '') ?>">
+        </div>
+        <div class="form-group full-width">
+            <label for="address_ja">Address (日本語)</label>
+            <input type="text" id="address_ja" name="address_ja" value="<?= htmlspecialchars($data['address_ja'] ?? '') ?>" placeholder="e.g. 東京都墨田区向島5-9-1">
         </div>
     </div>
 
@@ -208,9 +222,15 @@ require_once __DIR__ . '/../includes/header.php';
             <textarea id="facilities_ja" name="facilities_ja" rows="3" placeholder="コンマ区切りまたは文章で記入"><?= htmlspecialchars($data['facilities_ja'] ?? '') ?></textarea>
         </div>
     </div>
-    <div class="form-group">
-        <label for="surface_type">Surface Type</label>
-        <input type="text" id="surface_type" name="surface_type" value="<?= htmlspecialchars($data['surface_type'] ?? '') ?>">
+    <div class="form-grid">
+        <div class="form-group">
+            <label for="surface_type">Surface Type</label>
+            <input type="text" id="surface_type" name="surface_type" value="<?= htmlspecialchars($data['surface_type'] ?? '') ?>">
+        </div>
+        <div class="form-group">
+            <label for="surface_type_ja">Surface Type (日本語)</label>
+            <input type="text" id="surface_type_ja" name="surface_type_ja" value="<?= htmlspecialchars($data['surface_type_ja'] ?? '') ?>" placeholder="e.g. スムースコンクリート">
+        </div>
     </div>
 
     <h2 style="font-family:var(--font-serif);font-size:1.2rem;font-weight:normal;border-bottom:1px solid #eaecf0;padding-bottom:.3rem;margin:1.2rem 0 1rem;">Access & Operations</h2>
@@ -223,9 +243,17 @@ require_once __DIR__ . '/../includes/header.php';
             <label for="closed_days">Closed Days</label>
             <input type="text" id="closed_days" name="closed_days" value="<?= htmlspecialchars($data['closed_days'] ?? '') ?>">
         </div>
+        <div class="form-group">
+            <label for="closed_days_ja">Closed Days (日本語)</label>
+            <input type="text" id="closed_days_ja" name="closed_days_ja" value="<?= htmlspecialchars($data['closed_days_ja'] ?? '') ?>" placeholder="e.g. 毎週水曜日">
+        </div>
         <div class="form-group full-width">
             <label for="admission_fee">Admission Fee</label>
             <textarea id="admission_fee" name="admission_fee" rows="2"><?= htmlspecialchars($data['admission_fee'] ?? '') ?></textarea>
+        </div>
+        <div class="form-group full-width">
+            <label for="admission_fee_ja">Admission Fee (日本語)</label>
+            <textarea id="admission_fee_ja" name="admission_fee_ja" rows="2" placeholder="e.g. 大人 ¥500 / 学生 ¥300"><?= htmlspecialchars($data['admission_fee_ja'] ?? '') ?></textarea>
         </div>
         <div class="form-group">
             <label for="phone">Phone</label>
@@ -249,7 +277,7 @@ require_once __DIR__ . '/../includes/header.php';
         </div>
         <div class="form-group full-width">
             <label for="image_url">Image URL</label>
-            <input type="url" id="image_url" name="image_url" value="<?= htmlspecialchars($data['image_url'] ?? '') ?>">
+            <input type="text" id="image_url" name="image_url" value="<?= htmlspecialchars($data['image_url'] ?? '') ?>" placeholder="e.g. /images/skateparks/sumida_skatepark.jpg or https://…">
         </div>
     </div>
 

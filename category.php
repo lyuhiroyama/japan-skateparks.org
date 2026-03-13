@@ -61,7 +61,7 @@ if ($tag) {
         <p class="article-list-meta">
             📍 <a href="<?= BASE_URL ?>/prefecture.php?name=<?= urlencode($sp['prefecture']) ?>"><?= htmlspecialchars($sp['prefecture']) ?></a>
             <?= $sp['city'] ? '· ' . htmlspecialchars($sp['city']) : '' ?>
-            · <?= ucfirst(htmlspecialchars($sp['park_type'])) ?>
+            · <?= __('park_type_' . $sp['park_type']) ?>
         </p>
     </div>
 </li>
