@@ -45,17 +45,17 @@ $nearby = db_run("
     LIMIT 5
 ", [$sp['id'], $sp['id']])->get_result()->fetch_all(MYSQLI_ASSOC);
 
-// Resolve translated content — fall back to English if no Japanese version
+// Resolve translated content — in Japanese mode, only show Japanese if available, else show nothing
 $lang          = $GLOBALS['current_lang'] ?? 'en';
 $display_name  = ($lang === 'ja' && !empty($sp['name_ja']))          ? $sp['name_ja']          : $sp['name'];
-$description   = ($lang === 'ja' && !empty($sp['description_ja']))   ? $sp['description_ja']   : $sp['description'];
-$history       = ($lang === 'ja' && !empty($sp['history_ja']))       ? $sp['history_ja']       : $sp['history'];
-$facilities    = ($lang === 'ja' && !empty($sp['facilities_ja']))    ? $sp['facilities_ja']    : $sp['facilities'];
-$city          = ($lang === 'ja' && !empty($sp['city_ja']))          ? $sp['city_ja']          : $sp['city'];
-$address       = ($lang === 'ja' && !empty($sp['address_ja']))       ? $sp['address_ja']       : $sp['address'];
-$surface_type  = ($lang === 'ja' && !empty($sp['surface_type_ja']))  ? $sp['surface_type_ja']  : $sp['surface_type'];
-$closed_days   = ($lang === 'ja' && !empty($sp['closed_days_ja']))   ? $sp['closed_days_ja']   : $sp['closed_days'];
-$admission_fee = ($lang === 'ja' && !empty($sp['admission_fee_ja'])) ? $sp['admission_fee_ja'] : $sp['admission_fee'];
+$description   = $lang === 'ja' ? ($sp['description_ja']   ?? '')   : $sp['description'];
+$history       = $lang === 'ja' ? ($sp['history_ja']       ?? '')   : $sp['history'];
+$facilities    = $lang === 'ja' ? ($sp['facilities_ja']    ?? '')   : $sp['facilities'];
+$city          = $lang === 'ja' ? ($sp['city_ja']          ?? '')   : $sp['city'];
+$address       = $lang === 'ja' ? ($sp['address_ja']       ?? '')   : $sp['address'];
+$surface_type  = $lang === 'ja' ? ($sp['surface_type_ja']  ?? '')   : $sp['surface_type'];
+$closed_days   = $lang === 'ja' ? ($sp['closed_days_ja']   ?? '')   : $sp['closed_days'];
+$admission_fee = $lang === 'ja' ? ($sp['admission_fee_ja'] ?? '')   : $sp['admission_fee'];
 
 $page_title       = $display_name;
 $meta_description = mb_substr(strip_tags($description), 0, 160);
