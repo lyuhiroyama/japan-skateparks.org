@@ -237,7 +237,7 @@ require_once __DIR__ . '/../includes/header.php';
         </div>
         <div class="form-group">
             <label for="closed_days_ja">Closed Days (日本語)</label>
-            <input type="text" id="closed_days_ja" name="closed_days_ja" value="<?= htmlspecialchars($data['closed_days_ja']) ?>" placeholder="e.g. 毎週水曜日">
+            <textarea id="closed_days_ja" name="closed_days_ja" rows="2" placeholder="e.g. 毎週水曜日"><?= htmlspecialchars($data['closed_days_ja']) ?></textarea>
         </div>
         <div class="form-group full-width">
             <label for="admission_fee">Admission Fee</label>

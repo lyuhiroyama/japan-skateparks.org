@@ -151,7 +151,7 @@ require_once __DIR__ . '/includes/header.php';
             <?php if ($closed_days): ?>
             <tr>
                 <td><?= __('infobox_closed') ?></td>
-                <td><?= htmlspecialchars($closed_days) ?></td>
+                <td><?= nl2br(htmlspecialchars($closed_days)) ?></td>
             </tr>
             <?php endif; ?>
             <?php if ($admission_fee): ?>
@@ -170,18 +170,6 @@ require_once __DIR__ . '/includes/header.php';
             <tr>
                 <td><?= __('infobox_website') ?></td>
                 <td><a href="<?= htmlspecialchars($sp['website']) ?>" target="_blank" rel="noopener"><?= __('infobox_official_site') ?></a></td>
-            </tr>
-            <?php endif; ?>
-            <?php if ($sp['latitude'] && $sp['longitude']): ?>
-            <tr>
-                <td><?= __('infobox_coordinates') ?></td>
-                <td>
-                    <a class="map-link"
-                       href="https://maps.google.com/?q=<?= $sp['latitude'] ?>,<?= $sp['longitude'] ?>"
-                       target="_blank" rel="noopener">
-                        <?= number_format($sp['latitude'], 4) ?>°N, <?= number_format($sp['longitude'], 4) ?>°E
-                    </a>
-                </td>
             </tr>
             <?php endif; ?>
         </table>
