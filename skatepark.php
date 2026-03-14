@@ -151,7 +151,7 @@ require_once __DIR__ . '/includes/header.php';
             <?php if ($closed_days): ?>
             <tr>
                 <td><?= __('infobox_closed') ?></td>
-                <td><?= htmlspecialchars($closed_days) ?></td>
+                <td><?= nl2br(htmlspecialchars($closed_days)) ?></td>
             </tr>
             <?php endif; ?>
             <?php if ($admission_fee): ?>
