@@ -14,7 +14,10 @@ $total_indoor  = (int) $db->query("SELECT COUNT(*) FROM skateparks WHERE park_ty
 $total_outdoor = (int) $db->query("SELECT COUNT(*) FROM skateparks WHERE park_type IN ('outdoor','both')")->fetch_row()[0];
 
 // Featured article
-$featured = $db->query("SELECT s.*, p.name AS prefecture FROM skateparks s JOIN prefectures p ON p.id = s.prefecture_id WHERE s.featured = 1 LIMIT 1")->fetch_assoc();
+$featured = $db->query("SELECT s.*, p.name AS prefecture FROM skateparks s JOIN prefectures p ON p.id = s.prefecture_id WHERE s.featured = 1 AND s.image_url IS NOT NULL AND s.image_url != '' LIMIT 1")->fetch_assoc();
+if (!$featured) {
+    $featured = $db->query("SELECT s.*, p.name AS prefecture FROM skateparks s JOIN prefectures p ON p.id = s.prefecture_id WHERE s.image_url IS NOT NULL AND s.image_url != '' ORDER BY RAND() LIMIT 1")->fetch_assoc();
+}
 if (!$featured) {
     $featured = $db->query("SELECT s.*, p.name AS prefecture FROM skateparks s JOIN prefectures p ON p.id = s.prefecture_id ORDER BY RAND() LIMIT 1")->fetch_assoc();
 }
@@ -78,13 +81,13 @@ require_once __DIR__ . '/includes/header.php';
 <div class="featured-article">
     <div class="featured-article-header"><?= __('featured_skatepark') ?></div>
     <div class="featured-article-body">
-        <div class="featured-article-image">
+        <a class="featured-article-image" href="<?= BASE_URL ?>/skatepark.php?slug=<?= urlencode($featured['slug']) ?>" aria-label="Open <?= htmlspecialchars($featured['name']) ?>">
             <?php if (!empty($featured['image_url'])): ?>
                 <img src="<?= htmlspecialchars($featured['image_url']) ?>" alt="<?= htmlspecialchars($featured['name']) ?>" style="width:100%;height:100%;object-fit:cover;">
             <?php else: ?>
                 🛹
             <?php endif; ?>
-        </div>
+        </a>
         <div class="featured-article-text">
             <?php $feat_display = ($GLOBALS['current_lang'] === 'ja' && !empty($featured['name_ja'])) ? $featured['name_ja'] : $featured['name']; ?>
             <h3><a href="<?= BASE_URL ?>/skatepark.php?slug=<?= urlencode($featured['slug']) ?>"><?= htmlspecialchars($feat_display) ?></a></h3>
@@ -114,7 +117,13 @@ require_once __DIR__ . '/includes/header.php';
                 $display = ($GLOBALS['current_lang'] === 'ja' && !empty($sp['name_ja'])) ? $sp['name_ja'] : $sp['name'];
             ?>
             <li class="article-list-item">
-                <div class="article-list-icon">🛹</div>
+                <a class="article-list-icon" href="<?= BASE_URL ?>/skatepark.php?slug=<?= urlencode($sp['slug']) ?>" aria-label="Open <?= htmlspecialchars($sp['name']) ?>">
+                    <?php if (!empty($sp['image_url'])): ?>
+                        <img src="<?= htmlspecialchars($sp['image_url']) ?>" alt="<?= htmlspecialchars($sp['name']) ?>" loading="lazy">
+                    <?php else: ?>
+                        🛹
+                    <?php endif; ?>
+                </a>
                 <div class="article-list-info">
                     <h4><a href="<?= BASE_URL ?>/skatepark.php?slug=<?= urlencode($sp['slug']) ?>"><?= htmlspecialchars($display) ?></a></h4>
                     <p><?= htmlspecialchars($sp['prefecture']) ?> · <?= htmlspecialchars($sp['city'] ?? '') ?> ·

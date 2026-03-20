@@ -530,6 +530,18 @@ a.new { color: var(--color-link-red); }
     align-items: center;
     justify-content: center;
     font-size: 1.4rem;
+    text-decoration: none;
+}
+
+.article-list-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.featured-article-image {
+    text-decoration: none;
 }
 
 .article-list-info { flex: 1; }
