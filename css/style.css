@@ -497,7 +497,12 @@ a.new { color: var(--color-link-red); }
     background: var(--color-toc-bg);
     border-right: 1px solid var(--color-border-light);
     font-size: .8rem;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: background .15s;
 }
+.stat-item:hover { background: #eaf0fb; }
 .stat-item:last-child { border-right: none; }
 .stat-item .stat-number {
     font-size: 1.4rem;
