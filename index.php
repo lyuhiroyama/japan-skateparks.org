@@ -56,22 +56,22 @@ require_once __DIR__ . '/includes/header.php';
 
 <!-- Stats bar -->
 <div class="stats-bar">
-    <div class="stat-item">
+    <a class="stat-item" href="<?= BASE_URL ?>/search.php">
         <span class="stat-number"><?= $total_parks ?></span>
         <span class="stat-label"><?= __('stat_skateparks') ?></span>
-    </div>
-    <div class="stat-item">
+    </a>
+    <a class="stat-item" href="<?= BASE_URL ?>/prefecture.php">
         <span class="stat-number"><?= $total_prefs ?></span>
         <span class="stat-label"><?= __('stat_prefectures') ?></span>
-    </div>
-    <div class="stat-item">
+    </a>
+    <a class="stat-item" href="<?= BASE_URL ?>/search.php?type=outdoor">
         <span class="stat-number"><?= $total_outdoor ?></span>
         <span class="stat-label"><?= __('stat_outdoor') ?></span>
-    </div>
-    <div class="stat-item">
+    </a>
+    <a class="stat-item" href="<?= BASE_URL ?>/search.php?type=indoor">
         <span class="stat-number"><?= $total_indoor ?></span>
         <span class="stat-label"><?= __('stat_indoor') ?></span>
-    </div>
+    </a>
 </div>
 
 <!-- ============================================================
