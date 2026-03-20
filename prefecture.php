@@ -21,7 +21,7 @@ if ($name) {
 
     // Parks in this prefecture
     $parks = db_run("
-        SELECT s.slug, s.name, s.name_ja, s.city, s.park_type, s.surface_type, s.admission_fee
+        SELECT s.slug, s.name, s.name_ja, s.city, s.park_type, s.surface_type, s.admission_fee, s.image_url
         FROM skateparks s
         WHERE s.prefecture_id = ?
         ORDER BY s.name ASC
@@ -62,7 +62,13 @@ if ($name) {
     $alt     = ($GLOBALS['current_lang'] === 'ja') ? $sp['name'] : ($sp['name_ja'] ?? '');
 ?>
 <li class="article-list-item">
-    <div class="article-list-icon">🛹</div>
+    <a class="article-list-icon" href="<?= BASE_URL ?>/skatepark.php?slug=<?= urlencode($sp['slug']) ?>" aria-label="Open <?= htmlspecialchars($sp['name']) ?>">
+        <?php if (!empty($sp['image_url'])): ?>
+            <img src="<?= htmlspecialchars($sp['image_url']) ?>" alt="<?= htmlspecialchars($sp['name']) ?>" loading="lazy">
+        <?php else: ?>
+            🛹
+        <?php endif; ?>
+    </a>
     <div class="article-list-info">
         <h4>
             <a href="<?= BASE_URL ?>/skatepark.php?slug=<?= urlencode($sp['slug']) ?>"><?= htmlspecialchars($display) ?></a>
