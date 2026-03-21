@@ -17,6 +17,10 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= isset($page_title) ? htmlspecialchars($page_title) . ' — ' . __('site_name') : __('site_name') ?></title>
     <meta name="description" content="<?= isset($meta_description) ? htmlspecialchars($meta_description) : __('site_tagline') ?>">
+    <meta property="og:type"        content="website">
+    <meta property="og:site_name"   content="<?= __('site_name') ?>">
+    <meta property="og:title"       content="<?= isset($page_title) ? htmlspecialchars($page_title) . ' — ' . __('site_name') : __('site_name') ?>">
+    <meta property="og:description" content="<?= isset($meta_description) ? htmlspecialchars($meta_description) : __('site_tagline') ?>">
     <link rel="stylesheet" href="<?= BASE_URL ?>/css/style.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛹</text></svg>">
 </head>
