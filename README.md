@@ -1,6 +1,12 @@
-# Japan Skateparks
+[日本語](#japan-skateparksorg-日本語) | [English](#japan-skateparksorg-english)
 
-The free encyclopedia of skateboarding in Japan. A Wikipedia-style directory of all 47 prefectures, covering public and private skateparks across the country.
+---
+
+# japan-skateparks.org
+
+> ⚠️ Work in progress. Content and features are actively updated.
+
+A wikipedia-style website with skatepark info across all 47 prefectures of Japan.
 
 ## Stack
 
@@ -40,3 +46,50 @@ License terms (per the upstream repo):
 - **Commercial use** — attribution required, plus usage must be reported to the copyright holder (GSI Japan).
 
 Attribution is displayed on the map on the Prefectures page.
+
+---
+
+# japan-skateparks.org
+
+> ⚠️ 作成中です。コンテンツと機能は随時追加されています。
+
+日本全国47都道府県のスケートパークを集めた、Wikipediaスタイルのサイト。
+
+## 技術スタック
+
+- PHP（フレームワークなし）
+- MySQL
+- Vanilla JS / CSS
+
+## セットアップ
+
+1. `config/db.php.example` を `config/db.php` にコピーし、DB接続情報を入力する。
+2. スキーマとシードデータをインポートする：
+   ```
+   mysql -u root -p < sql/schema.sql
+   ```
+3. Webサーバー（Apache/Nginx）のドキュメントルートをプロジェクトのルートに設定する。
+
+## データベースマイグレーション
+
+既存のDBを更新する場合は `sql/` 内のマイグレーションファイルを使用する：
+
+| ファイル | 内容 |
+|---------|------|
+| `sql/migrate_add_prefectures.sql` | 47都道府県を全件追加（既存DBに対して安全に実行可能） |
+
+## サードパーティデータのクレジット
+
+### 都道府県マップ
+
+インタラクティブな都道府県マップ（`images/japan-prefectures.svg`）は、[dataofjapan/land](https://github.com/dataofjapan/land) 経由で取得したGeoJSONデータから生成しており、そのデータは以下に由来します：
+
+> **地球地図日本 / Global Map Japan**  
+> 国土地理院（GSI）  
+> http://www.gsi.go.jp/kankyochiri/gm_jpn.html
+
+ライセンス（upstream repoに準拠）：
+- **非営利利用** — 無料。出典（地球地図日本 / GSI）の明記が必要。
+- **営利利用** — 出典の明記に加え、著作権者（国土地理院）への利用報告が必要。
+
+出典はサイトの都道府県ページのマップ下部に表示済み。

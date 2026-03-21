@@ -1,7 +1,7 @@
 <?php
 return [
     // Site identity
-    'site_name'                  => 'Japan Skateparks',
+    'site_name'                  => 'Japan Skateparks Wikipedia',
     'site_tagline'               => 'The Free Encyclopedia of Japan\'s Skateparks',
     'lang_switch_en'             => 'EN',
     'lang_switch_ja'             => 'JA',

@@ -2,7 +2,7 @@
 return [
     // Site identity
     'site_name'                  => '日本スケートパークWiki',
-    'site_tagline'               => '日本のスケートパーク無料百科事典',
+    'site_tagline'               => '日本のスケートパークWikipedia',
     'lang_switch_en'             => 'EN',
     'lang_switch_ja'             => 'JA',
 

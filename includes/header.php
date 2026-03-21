@@ -31,7 +31,6 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
             <span class="logo-icon">🛹</span>
             <span class="logo-text">
                 <span class="logo-title"><?= __('site_name') ?></span>
-                <span class="logo-tagline"><?= __('site_tagline') ?></span>
             </span>
         </a>
 
