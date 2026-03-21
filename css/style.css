@@ -871,7 +871,7 @@ a.new { color: var(--color-link-red); }
 @media (max-width: 540px) {
     .header-inner { flex-wrap: wrap; }
     .header-search { width: 100%; max-width: none; order: 3; }
-    .header-search input[type="search"] { font-size: 1rem; } /* prevent iOS auto-zoom (needs ≥16px) */
+    .header-search input[type="search"] { font-size: 16px; } /* prevent iOS auto-zoom (needs ≥16px) */
     .article-title { font-size: 1.5rem; }
 }
 
