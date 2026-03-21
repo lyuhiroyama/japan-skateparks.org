@@ -134,7 +134,24 @@ if ($name) {
         FROM prefectures p
         LEFT JOIN skateparks s ON s.prefecture_id = p.id
         GROUP BY p.id
-        ORDER BY p.region, p.name ASC
+        ORDER BY
+            CASE p.region
+                WHEN 'Kanto'    THEN 0
+                WHEN 'Hokkaido' THEN 1
+                ELSE 2
+            END,
+            p.region,
+            CASE WHEN p.region = 'Kanto' THEN
+                CASE p.name
+                    WHEN 'Tokyo'    THEN 0
+                    WHEN 'Kanagawa' THEN 1
+                    WHEN 'Chiba'    THEN 2
+                    WHEN 'Saitama'  THEN 3
+                    WHEN 'Ibaraki'  THEN 4
+                    ELSE 5
+                END
+            ELSE 0 END,
+            p.name ASC
     ")->fetch_all(MYSQLI_ASSOC);
 
     // Group by region
