@@ -2,7 +2,7 @@
 
 ---
 
-# japan-skateparks.org
+# japan-skateparks.org (English)  
 
 > ⚠️ Work in progress. Content and features are actively updated.
 
@@ -49,7 +49,7 @@ Attribution is displayed on the map on the Prefectures page.
 
 ---
 
-# japan-skateparks.org
+# japan-skateparks.org (日本語)  
 
 > ⚠️ 作成中です。コンテンツと機能は随時追加されています。
 
