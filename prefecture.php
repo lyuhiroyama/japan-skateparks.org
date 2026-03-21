@@ -111,7 +111,7 @@ if ($name) {
     require_once __DIR__ . '/includes/header.php';
 ?>
 <h1 class="article-title">
-    <?= htmlspecialchars($region) ?> <?= __('region_suffix') ?>
+    <?= __('region_' . $region) ?> <?= __('region_suffix') ?>
     <small><?= __('prefectures_and_parks') ?></small>
 </h1>
 
@@ -186,7 +186,7 @@ if ($name) {
 <div id="map-tooltip" class="map-tooltip" role="tooltip"></div>
 
 <?php foreach ($by_region as $reg => $prefs): ?>
-<h2><?= htmlspecialchars($reg) ?> <?= __('region_suffix') ?></h2>
+<h2><?= __('region_' . $reg) ?> <?= __('region_suffix') ?></h2>
 <div class="prefecture-grid">
     <?php foreach ($prefs as $p): ?>
     <a class="prefecture-card" href="<?= BASE_URL ?>/prefecture.php?name=<?= urlencode($p['name']) ?>">
