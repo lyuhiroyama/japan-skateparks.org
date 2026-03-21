@@ -618,6 +618,70 @@ a.new { color: var(--color-link-red); }
 }
 
 /* ============================================================
+   JAPAN SVG MAP
+   ============================================================ */
+.japan-map-wrap {
+    position: relative;
+    margin-bottom: 1.5rem;
+    background: #ddeeff;
+    border: 1px solid var(--color-border);
+    border-radius: 3px;
+    overflow: hidden;
+}
+.japan-map-wrap svg.japan-svg-map {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+.japan-map-wrap path {
+    fill: #d8eccc;
+    stroke: #fff;
+    stroke-width: 0.6;
+    transition: fill .12s;
+    cursor: pointer;
+}
+.japan-map-wrap path.has-parks {
+    fill: #b3d4f5;
+}
+.japan-map-wrap path:hover {
+    fill: #3366cc !important;
+}
+.map-loading {
+    padding: 2.5rem;
+    text-align: center;
+    color: var(--color-text-muted);
+    font-size: .9rem;
+}
+.map-tooltip {
+    position: fixed;
+    background: rgba(28, 28, 28, .92);
+    color: #fff;
+    padding: .4rem .75rem;
+    border-radius: 3px;
+    font-size: .82rem;
+    pointer-events: none;
+    z-index: 9999;
+    white-space: nowrap;
+    display: none;
+    line-height: 1.5;
+}
+.map-tooltip strong { display: block; font-size: .88rem; }
+.map-tooltip .tip-ja { display: block; font-size: .72rem; opacity: .7; }
+.map-tooltip .tip-count { display: block; font-size: .78rem; opacity: .85; }
+.map-attribution {
+    padding: .3rem .6rem;
+    font-size: .72rem;
+    color: var(--color-text-muted);
+    border-top: 1px solid var(--color-border-light);
+    text-align: right;
+}
+.map-attribution a { color: var(--color-text-muted); }
+
+@media (max-width: 640px) {
+    .japan-map-wrap { display: none; }
+}
+
+/* ============================================================
    SEARCH PAGE
    ============================================================ */
 .search-header {
