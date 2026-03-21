@@ -143,6 +143,16 @@ if ($name) {
         $by_region[$row['region']][] = $row;
     }
 
+    // Build JS data: name → {count, url, name_ja}
+    $pref_map_data = [];
+    foreach ($all as $p) {
+        $pref_map_data[$p['name']] = [
+            'count'   => (int)$p['cnt'],
+            'url'     => BASE_URL . '/prefecture.php?name=' . urlencode($p['name']),
+            'name_ja' => $p['name_ja'],
+        ];
+    }
+
     $page_title = 'Skateparks by Prefecture';
     require_once __DIR__ . '/includes/header.php';
 ?>
@@ -151,6 +161,12 @@ if ($name) {
 <div class="hatnote">
     <?= __('japan_47_prefs') ?>
 </div>
+
+<div class="japan-map-wrap">
+    <div id="japan-map-container"><p class="map-loading">Loading map…</p></div>
+    <p class="map-attribution">Map data: <a href="http://www.gsi.go.jp/kankyochiri/gm_jpn.html" target="_blank" rel="noopener">地球地図日本 / Global Map Japan (GSI)</a></p>
+</div>
+<div id="map-tooltip" class="map-tooltip" role="tooltip"></div>
 
 <?php foreach ($by_region as $reg => $prefs): ?>
 <h2><?= htmlspecialchars($reg) ?> <?= __('region_suffix') ?></h2>
@@ -166,6 +182,158 @@ if ($name) {
     <?php endforeach; ?>
 </div>
 <?php endforeach; ?>
+
+<script>
+(function () {
+    var prefData  = <?= json_encode($pref_map_data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
+    var container = document.getElementById('japan-map-container');
+    var tooltip   = document.getElementById('map-tooltip');
+
+    fetch('<?= BASE_URL ?>/images/japan-prefectures.svg')
+        .then(function (r) { return r.text(); })
+        .then(function (svgText) {
+            container.innerHTML = svgText;
+            var svg = container.querySelector('svg');
+            svg.removeAttribute('width');
+            svg.removeAttribute('height');
+
+            // Fit the viewBox to the main islands, then inset Okinawa bottom-left
+            // (same convention used on all official Japanese maps)
+            var g        = svg.querySelector('#japan-prefectures');
+            var okinawa  = svg.querySelector('path[data-name="Okinawa"]');
+            if (g) {
+                var pad = 12;
+
+                // 1. Measure bounding box without Okinawa
+                if (okinawa) okinawa.style.visibility = 'hidden';
+                var bb = g.getBBox();
+                if (okinawa) okinawa.style.visibility = '';
+
+                // Clamp right + bottom edges to the main island extents.
+                // Tokyo includes Minamitorishima (154°E) and the Ogasawara/Izu
+                // island chains (~27°N) — both pull the raw bbox far beyond the
+                // visible main islands. Kagoshima also has outlying southern islands.
+                var hokkaido  = svg.querySelector('path[data-name="Hokkaido"]');
+                var kagoshima = svg.querySelector('path[data-name="Kagoshima"]');
+                if (hokkaido) {
+                    var hkBB = hokkaido.getBBox();
+                    var clampR = hkBB.x + hkBB.width + pad * 4;
+                    if (bb.x + bb.width > clampR) bb.width = clampR - bb.x;
+                }
+                if (kagoshima) {
+                    // Use Kagoshima mainland as the southern anchor —
+                    // its bbox bottom is pulled down by outlying islands,
+                    // so we use Kyushu's rough southern extent instead.
+                    // Grab Kyushu neighbours to find a safe bottom clamp.
+                    var kyushuPaths = ['Fukuoka','Saga','Nagasaki','Kumamoto','Oita','Miyazaki'];
+                    var maxBottom = bb.y;
+                    kyushuPaths.forEach(function (n) {
+                        var p = svg.querySelector('path[data-name="' + n + '"]');
+                        if (p) {
+                            var pb = p.getBBox();
+                            if (pb.y + pb.height > maxBottom) maxBottom = pb.y + pb.height;
+                        }
+                    });
+                    var clampB = maxBottom + pad * 4;
+                    if (bb.y + bb.height > clampB) bb.height = clampB - bb.y;
+                }
+
+                svg.setAttribute('viewBox',
+                    (bb.x - pad) + ' ' + (bb.y - pad) + ' ' +
+                    (bb.width  + pad * 2) + ' ' + (bb.height + pad * 2)
+                );
+
+                // Ocean background — makes empty corners read as sea, not dead space
+                var ocean = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                ocean.setAttribute('x',      bb.x - pad);
+                ocean.setAttribute('y',      bb.y - pad);
+                ocean.setAttribute('width',  bb.width  + pad * 2);
+                ocean.setAttribute('height', bb.height + pad * 2);
+                ocean.setAttribute('fill',   '#f2f8ff');
+                ocean.style.pointerEvents = 'none';
+                g.insertBefore(ocean, g.firstChild);
+
+                // 2. Move Okinawa into a bottom-right inset (fills the empty Pacific corner)
+                if (okinawa) {
+                    var ok = okinawa.getBBox();
+                    var targetX = bb.x + bb.width - ok.width - pad;
+                    var targetY = bb.y + bb.height - ok.height;
+                    okinawa.setAttribute('transform',
+                        'translate(' + (targetX - ok.x) + ',' + (targetY - ok.y) + ')'
+                    );
+
+                    // Draw a hit-area + inset border covering the full Okinawa box
+                    var inset = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                    inset.setAttribute('x',      targetX - 4);
+                    inset.setAttribute('y',      targetY - 4);
+                    inset.setAttribute('width',  ok.width  + 8);
+                    inset.setAttribute('height', ok.height + 8);
+                    inset.setAttribute('fill',   'transparent'); // captures pointer events
+                    inset.setAttribute('stroke', '#a2a9b1');
+                    inset.setAttribute('stroke-width', '0.8');
+                    inset.setAttribute('stroke-dasharray', '3,2');
+                    inset.style.cursor = 'pointer';
+                    g.insertBefore(inset, okinawa);
+
+                    // Wire the inset rect with same hover/click as the Okinawa path
+                    var okInfo = prefData['Okinawa'] || null;
+                    inset.addEventListener('mousemove', function (e) {
+                        var count = okInfo ? okInfo.count : 0;
+                        tooltip.innerHTML =
+                            '<strong>Okinawa</strong>' +
+                            (okInfo ? '<span class="tip-ja">' + okInfo.name_ja + '</span>' : '') +
+                            '<span class="tip-count">' + count + ' skatepark' + (count !== 1 ? 's' : '') + '</span>';
+                        tooltip.style.display = 'block';
+                        tooltip.style.left = (e.clientX + 14) + 'px';
+                        tooltip.style.top  = (e.clientY - 14) + 'px';
+                        okinawa.style.fill = '#3366cc';
+                    });
+                    inset.addEventListener('mouseleave', function () {
+                        tooltip.style.display = 'none';
+                        okinawa.style.fill = '';
+                    });
+                    if (okInfo) {
+                        inset.addEventListener('click', function () {
+                            window.location.href = okInfo.url;
+                        });
+                    }
+                }
+            }
+
+            svg.querySelectorAll('path[data-name]').forEach(function (path) {
+                var name = path.getAttribute('data-name');
+                var info = prefData[name] || null;
+
+                path.classList.add(info && info.count > 0 ? 'has-parks' : 'no-parks');
+
+                path.addEventListener('mousemove', function (e) {
+                    var count = info ? info.count : 0;
+                    tooltip.innerHTML =
+                        '<strong>' + name + '</strong>' +
+                        (info ? '<span class="tip-ja">' + info.name_ja + '</span>' : '') +
+                        '<span class="tip-count">' + count + ' skatepark' + (count !== 1 ? 's' : '') + '</span>';
+                    tooltip.style.display = 'block';
+                    tooltip.style.left = (e.clientX + 14) + 'px';
+                    tooltip.style.top  = (e.clientY - 14) + 'px';
+                });
+
+                path.addEventListener('mouseleave', function () {
+                    tooltip.style.display = 'none';
+                });
+
+                if (info) {
+                    path.addEventListener('click', function () {
+                        window.location.href = info.url;
+                    });
+                }
+
+            });
+        })
+        .catch(function () {
+            container.innerHTML = '<p class="map-loading">Map unavailable.</p>';
+        });
+}());
+</script>
 
 <?php } // end if/elseif/else ?>
 
