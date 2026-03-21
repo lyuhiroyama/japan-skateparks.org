@@ -239,7 +239,7 @@ require_once __DIR__ . '/includes/header.php';
          ============================================================ -->
     <?php if (!empty($sp['opening_hours']) || !empty($sp['admission_fee']) || !empty($sp['address'])): ?>
     <h2 id="access"><?= __('section_access') ?></h2>
-    <table style="border-collapse:collapse;font-size:.88rem;width:auto;min-width:300px;">
+    <table style="border-collapse:collapse;font-size:.88rem;width:100%;table-layout:fixed;">
         <?php if ($sp['address']): ?>
         <tr>
             <td style="padding:.3rem .8rem .3rem 0;font-weight:bold;white-space:nowrap;"><?= __('access_address') ?></td>
@@ -267,7 +267,7 @@ require_once __DIR__ . '/includes/header.php';
         <?php if ($sp['website']): ?>
         <tr>
             <td style="padding:.3rem .8rem .3rem 0;font-weight:bold;white-space:nowrap;"><?= __('access_website') ?></td>
-            <td style="padding:.3rem 0;"><a href="<?= htmlspecialchars($sp['website']) ?>" target="_blank" rel="noopener"><?= htmlspecialchars($sp['website']) ?></a></td>
+            <td style="padding:.3rem 0;overflow-wrap:break-word;word-break:break-all;"><a href="<?= htmlspecialchars($sp['website']) ?>" target="_blank" rel="noopener"><?= htmlspecialchars($sp['website']) ?></a></td>
         </tr>
         <?php endif; ?>
         <?php if ($sp['latitude'] && $sp['longitude']): ?>

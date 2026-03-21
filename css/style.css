@@ -352,6 +352,9 @@ a.new { color: var(--color-link-red); }
     padding: .3rem .5rem;
     border-top: 1px solid var(--color-border-light);
     vertical-align: top;
+    overflow-wrap: break-word;
+    word-break: break-all;
+    min-width: 0;
 }
 
 .infobox tr td:first-child {
