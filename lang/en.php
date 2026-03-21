@@ -33,7 +33,7 @@ return [
     'footer_content_note'        => 'Content is freely available. Data contributed by the skating community.',
 
     // index.php — notice
-    'welcome_notice'             => 'Welcome to <strong>Japan Skateparks</strong>, the free encyclopedia of skateboarding parks in Japan.',
+    'welcome_notice'             => 'Welcome to <strong>Japan Skateparks Wikipedia</strong>, a directory of skateparks across Japan.',
     'welcome_park_count'         => 'We currently have <strong>%d</strong> skatepark articles covering <strong>%d</strong> prefectures.',
     'help_grow'                  => 'Help us grow',
     'help_grow_suffix'           => 'by adding a skatepark near you.',
@@ -57,12 +57,12 @@ return [
     'park_plural'                => 'parks',
 
     // index.php — about
-    'about_title'                => '📖 About Japan Skateparks',
-    'about_p1'                   => '<strong>Japan Skateparks</strong> is a free, community-driven encyclopedia documenting every skatepark in Japan. Our goal is to compile comprehensive, accurate information about each facility — from Olympic-grade venues to neighbourhood DIY spots.',
-    'about_p2'                   => 'Inspired by the model of Wikipedia, all information is freely accessible and community-contributed. Whether you are planning a skate trip, looking for a local park, or interested in the history of skateboarding infrastructure in Japan, this is your reference.',
+    'about_title'                => '📖 About Japan Skateparks Wikipedia',
+    'about_p1'                   => '<strong>Japan Skateparks Wikipedia</strong> is a community-driven directory documenting skateparks across Japan. Our goal is to compile comprehensive, accurate information about each facility — from Olympic-grade venues to neighbourhood DIY spots.',
+    'about_p2'                   => 'All information is to-be community-contributed. Whether you are planning a skate trip, looking for a local park, or interested in the history of skateboarding infrastructure in Japan, this is your reference.',
     'about_p3'                   => 'Skateboarding was added to the Olympic programme at the <strong>Tokyo 2020 Games</strong>, marking a milestone for the sport in Japan. Since then, investment in skateboarding infrastructure has grown significantly across the country.',
     'contribute_skatepark'       => 'Contribute a skatepark',
-    'browse_all_articles'        => 'Browse all articles',
+    'browse_all_articles'        => 'Browse all skateparks',
 
     // skatepark.php — tabs
     'tab_article'                => 'Article',
