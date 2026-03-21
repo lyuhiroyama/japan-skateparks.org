@@ -623,7 +623,7 @@ a.new { color: var(--color-link-red); }
 .japan-map-wrap {
     position: relative;
     margin-bottom: 1.5rem;
-    background: #ddeeff;
+    background: #f2f8ff;
     border: 1px solid var(--color-border);
     border-radius: 3px;
     overflow: hidden;

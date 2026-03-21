@@ -249,7 +249,7 @@ if ($name) {
                 ocean.setAttribute('y',      bb.y - pad);
                 ocean.setAttribute('width',  bb.width  + pad * 2);
                 ocean.setAttribute('height', bb.height + pad * 2);
-                ocean.setAttribute('fill',   '#ddeeff');
+                ocean.setAttribute('fill',   '#f2f8ff');
                 ocean.style.pointerEvents = 'none';
                 g.insertBefore(ocean, g.firstChild);
 
