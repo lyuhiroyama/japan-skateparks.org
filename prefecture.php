@@ -111,7 +111,7 @@ if ($name) {
     require_once __DIR__ . '/includes/header.php';
 ?>
 <h1 class="article-title">
-    <?= htmlspecialchars($region) ?> <?= __('region_suffix') ?>
+    <?= __('region_' . $region) ?> <?= __('region_suffix') ?>
     <small><?= __('prefectures_and_parks') ?></small>
 </h1>
 
@@ -186,7 +186,7 @@ if ($name) {
 <div id="map-tooltip" class="map-tooltip" role="tooltip"></div>
 
 <?php foreach ($by_region as $reg => $prefs): ?>
-<h2><?= htmlspecialchars($reg) ?> <?= __('region_suffix') ?></h2>
+<h2><?= __('region_' . $reg) ?> <?= __('region_suffix') ?></h2>
 <div class="prefecture-grid">
     <?php foreach ($prefs as $p): ?>
     <a class="prefecture-card" href="<?= BASE_URL ?>/prefecture.php?name=<?= urlencode($p['name']) ?>">
@@ -203,8 +203,22 @@ if ($name) {
 <script>
 (function () {
     var prefData  = <?= json_encode($pref_map_data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
+    var isJa      = <?= json_encode($GLOBALS['current_lang'] === 'ja') ?>;
     var container = document.getElementById('japan-map-container');
     var tooltip   = document.getElementById('map-tooltip');
+
+    function buildTooltip(name, info) {
+        var count   = info ? info.count : 0;
+        var nameJa  = info ? info.name_ja : (name === 'Okinawa' ? '沖縄県' : '');
+        var primary = isJa ? nameJa : name;
+        var secondary = isJa ? name : nameJa;
+        var countLabel = isJa
+            ? 'スケートパーク：' + count + '箇所'
+            : count + ' skatepark' + (count !== 1 ? 's' : '');
+        return '<strong>' + primary + '</strong>' +
+               (secondary ? '<span class="tip-ja">' + secondary + '</span>' : '') +
+               '<span class="tip-count">' + countLabel + '</span>';
+    }
 
     fetch('<?= BASE_URL ?>/images/japan-prefectures.svg')
         .then(function (r) { return r.text(); })
@@ -295,11 +309,7 @@ if ($name) {
                     // Wire the inset rect with same hover/click as the Okinawa path
                     var okInfo = prefData['Okinawa'] || null;
                     inset.addEventListener('mousemove', function (e) {
-                        var count = okInfo ? okInfo.count : 0;
-                        tooltip.innerHTML =
-                            '<strong>Okinawa</strong>' +
-                            (okInfo ? '<span class="tip-ja">' + okInfo.name_ja + '</span>' : '') +
-                            '<span class="tip-count">' + count + ' skatepark' + (count !== 1 ? 's' : '') + '</span>';
+                        tooltip.innerHTML = buildTooltip('Okinawa', okInfo);
                         tooltip.style.display = 'block';
                         tooltip.style.left = (e.clientX + 14) + 'px';
                         tooltip.style.top  = (e.clientY - 14) + 'px';
@@ -324,11 +334,7 @@ if ($name) {
                 path.classList.add(info && info.count > 0 ? 'has-parks' : 'no-parks');
 
                 path.addEventListener('mousemove', function (e) {
-                    var count = info ? info.count : 0;
-                    tooltip.innerHTML =
-                        '<strong>' + name + '</strong>' +
-                        (info ? '<span class="tip-ja">' + info.name_ja + '</span>' : '') +
-                        '<span class="tip-count">' + count + ' skatepark' + (count !== 1 ? 's' : '') + '</span>';
+                    tooltip.innerHTML = buildTooltip(name, info);
                     tooltip.style.display = 'block';
                     tooltip.style.left = (e.clientX + 14) + 'px';
                     tooltip.style.top  = (e.clientY - 14) + 'px';
