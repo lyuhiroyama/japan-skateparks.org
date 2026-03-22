@@ -176,6 +176,8 @@ require_once __DIR__ . '/includes/header.php';
     </div>
     <!-- /infobox -->
 
+    <div class="article-prose">
+
     <!-- ============================================================
          TABLE OF CONTENTS
          ============================================================ -->
@@ -239,41 +241,41 @@ require_once __DIR__ . '/includes/header.php';
          ============================================================ -->
     <?php if (!empty($sp['opening_hours']) || !empty($sp['admission_fee']) || !empty($sp['address'])): ?>
     <h2 id="access"><?= __('section_access') ?></h2>
-    <table style="border-collapse:collapse;font-size:.88rem;width:100%;table-layout:fixed;">
+    <table class="access-fees-table">
         <?php if ($sp['address']): ?>
         <tr>
-            <td style="padding:.3rem .8rem .3rem 0;font-weight:bold;white-space:nowrap;"><?= __('access_address') ?></td>
-            <td style="padding:.3rem 0;"><?= htmlspecialchars($sp['address']) ?></td>
+            <td><?= __('access_address') ?></td>
+            <td><?= htmlspecialchars($sp['address']) ?></td>
         </tr>
         <?php endif; ?>
         <?php if ($sp['opening_hours']): ?>
         <tr>
-            <td style="padding:.3rem .8rem .3rem 0;font-weight:bold;white-space:nowrap;"><?= __('access_hours') ?></td>
-            <td style="padding:.3rem 0;"><?= nl2br(htmlspecialchars($sp['opening_hours'])) ?></td>
+            <td><?= __('access_hours') ?></td>
+            <td><?= nl2br(htmlspecialchars($sp['opening_hours'])) ?></td>
         </tr>
         <?php endif; ?>
         <?php if ($sp['closed_days']): ?>
         <tr>
-            <td style="padding:.3rem .8rem .3rem 0;font-weight:bold;white-space:nowrap;"><?= __('access_closed') ?></td>
-            <td style="padding:.3rem 0;"><?= htmlspecialchars($sp['closed_days']) ?></td>
+            <td><?= __('access_closed') ?></td>
+            <td><?= htmlspecialchars($sp['closed_days']) ?></td>
         </tr>
         <?php endif; ?>
         <?php if ($sp['admission_fee']): ?>
         <tr>
-            <td style="padding:.3rem .8rem .3rem 0;font-weight:bold;white-space:nowrap;"><?= __('access_admission') ?></td>
-            <td style="padding:.3rem 0;"><?= nl2br(htmlspecialchars($sp['admission_fee'])) ?></td>
+            <td><?= __('access_admission') ?></td>
+            <td><?= nl2br(htmlspecialchars($sp['admission_fee'])) ?></td>
         </tr>
         <?php endif; ?>
         <?php if ($sp['website']): ?>
         <tr>
-            <td style="padding:.3rem .8rem .3rem 0;font-weight:bold;white-space:nowrap;"><?= __('access_website') ?></td>
-            <td style="padding:.3rem 0;overflow-wrap:break-word;word-break:break-all;"><a href="<?= htmlspecialchars($sp['website']) ?>" target="_blank" rel="noopener"><?= htmlspecialchars($sp['website']) ?></a></td>
+            <td><?= __('access_website') ?></td>
+            <td class="access-fees-url"><a href="<?= htmlspecialchars($sp['website']) ?>" target="_blank" rel="noopener"><?= htmlspecialchars($sp['website']) ?></a></td>
         </tr>
         <?php endif; ?>
         <?php if ($sp['latitude'] && $sp['longitude']): ?>
         <tr>
-            <td style="padding:.3rem .8rem .3rem 0;font-weight:bold;white-space:nowrap;"><?= __('access_map') ?></td>
-            <td style="padding:.3rem 0;">
+            <td><?= __('access_map') ?></td>
+            <td>
                 <a href="https://maps.google.com/?q=<?= $sp['latitude'] ?>,<?= $sp['longitude'] ?>" target="_blank" rel="noopener">
                     <?= __('view_on_maps') ?>
                 </a>
@@ -294,6 +296,8 @@ require_once __DIR__ . '/includes/header.php';
         <?php endforeach; ?>
     </ul>
     <?php endif; ?>
+
+    </div><!-- /article-prose -->
 
 </div><!-- /article-body -->
 

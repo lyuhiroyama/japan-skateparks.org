@@ -287,6 +287,35 @@ a.new { color: var(--color-link-red); }
 }
 .article-body li { margin-bottom: .2rem; }
 
+/* Wraps all article text beside the floated infobox — BFC keeps blocks/tables
+   from painting full-width under the float (fixes overlap with wide tables). */
+.article-prose {
+    display: flow-root;
+    min-width: 0;
+}
+
+/* Access & fees table: full width + fixed layout only on mobile (prevents
+   horizontal URL overflow). Desktop uses auto width so it stays in the prose column. */
+.access-fees-table {
+    border-collapse: collapse;
+    font-size: .88rem;
+    width: auto;
+    max-width: 100%;
+}
+.access-fees-table td {
+    padding: .3rem 0;
+    vertical-align: top;
+}
+.access-fees-table td:first-child {
+    padding: .3rem .8rem .3rem 0;
+    font-weight: bold;
+    white-space: nowrap;
+}
+.access-fees-table .access-fees-url {
+    overflow-wrap: break-word;
+    word-break: break-all;
+}
+
 /* ============================================================
    INFOBOX
    ============================================================ */
@@ -863,6 +892,11 @@ a.new { color: var(--color-link-red); }
     #sidebar { display: none; }
     #content { border-left: none; }
     .infobox { float: none; width: 100%; margin: 0 0 1rem; }
+    .access-fees-table {
+        width: 100%;
+        table-layout: fixed;
+    }
+    .access-fees-table td { min-width: 0; }
     .main-page-columns { grid-template-columns: 1fr; }
     .header-nav { display: none; }
     .form-grid { grid-template-columns: 1fr; }
