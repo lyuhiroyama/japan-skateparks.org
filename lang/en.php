@@ -35,6 +35,7 @@ return [
     // index.php — notice
     'welcome_notice'             => 'Welcome to <strong>Japan Skateparks Wikipedia</strong>, a directory of skateparks across Japan.',
     'welcome_park_count'         => 'We currently have <strong>%d</strong> skatepark articles covering <strong>%d</strong> prefectures.',
+    'welcome_disclaimer'         => 'Like Wikipedia, articles here are community-written and may contain mistakes. If you notice an error, we welcome corrections — a dedicated way to submit them is coming soon.',
     'help_grow'                  => 'Help us grow',
     'help_grow_suffix'           => 'by adding a skatepark near you.',
 

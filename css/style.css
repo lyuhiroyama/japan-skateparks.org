@@ -751,6 +751,16 @@ a.new { color: var(--color-link-red); }
     align-items: flex-start;
 }
 .notice-box .notice-icon { flex-shrink: 0; font-size: 1.1rem; }
+.notice-body { flex: 1; min-width: 0; }
+.notice-main { margin: 0 0 .45rem; line-height: 1.55; }
+.notice-disclaimer {
+    margin: 0;
+    font-size: .76rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    border-top: 1px solid rgba(162, 197, 232, 0.65);
+    padding-top: .45rem;
+}
 
 /* ============================================================
    MAP LINK

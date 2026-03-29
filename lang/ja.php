@@ -1,7 +1,7 @@
 <?php
 return [
     // Site identity
-    'site_name'                  => '日本スケートパークWiki',
+    'site_name'                  => '日本スケートパークWikipedia',
     'site_tagline'               => '日本国内スケートパークのWikipedia',
     'lang_switch_en'             => 'EN',
     'lang_switch_ja'             => 'JA',
@@ -35,6 +35,7 @@ return [
     // index.php — notice
     'welcome_notice'             => '<strong>日本スケートパークWikipedia</strong>へようこそ。日本全国のスケートパークを網羅したディレクトリです。',
     'welcome_park_count'         => '現在、<strong>%d</strong>件のスケートパーク記事が<strong>%d</strong>都道府県をカバーしています。',
+    'welcome_disclaimer'         => 'Wikipediaと同様、記事はコミュニティにより編集されており、誤りを含むことがあります。誤記・古い情報などお気づきの点があれば修正のご協力をお願いします（専用の報告手段は準備中です）。',
     'help_grow'                  => '追加にご協力ください',
     'help_grow_suffix'           => '近くのスケートパークを追加してください。',
 

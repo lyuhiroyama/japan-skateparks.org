@@ -49,9 +49,12 @@ require_once __DIR__ . '/includes/header.php';
      ============================================================ -->
 <div class="notice-box">
     <span class="notice-icon">ℹ️</span>
-    <span><?= __('welcome_notice') ?>
-    <?= __('welcome_park_count', $total_parks, $total_prefs) ?>
-    <a href="<?= BASE_URL ?>/admin/add.php"><?= __('help_grow') ?></a> <?= __('help_grow_suffix') ?></span>
+    <div class="notice-body">
+        <p class="notice-main"><?= __('welcome_notice') ?>
+        <?= __('welcome_park_count', $total_parks, $total_prefs) ?>
+        <a href="<?= BASE_URL ?>/admin/add.php"><?= __('help_grow') ?></a> <?= __('help_grow_suffix') ?></p>
+        <p class="notice-disclaimer"><?= __('welcome_disclaimer') ?></p>
+    </div>
 </div>
 
 <!-- Stats bar -->
