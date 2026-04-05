@@ -27,7 +27,7 @@ $recent = $db->query("
     SELECT s.*, p.name AS prefecture
     FROM skateparks s
     JOIN prefectures p ON p.id = s.prefecture_id
-    ORDER BY s.created_at DESC
+    ORDER BY (s.image_url IS NOT NULL AND s.image_url != '') DESC, s.created_at DESC
     LIMIT 6
 ")->fetch_all(MYSQLI_ASSOC);
 
