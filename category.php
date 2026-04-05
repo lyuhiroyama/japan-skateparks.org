@@ -13,12 +13,12 @@ if ($tag) {
     }
 
     $parks = db_run("
-        SELECT s.slug, s.name, s.name_ja, s.city, s.park_type, p.name AS prefecture
+        SELECT s.slug, s.name, s.name_ja, s.city, s.park_type, p.name AS prefecture, s.image_url
         FROM skateparks s
         JOIN prefectures p ON p.id = s.prefecture_id
         JOIN skatepark_tags st ON st.skatepark_id = s.id
         WHERE st.tag_id = ?
-        ORDER BY s.name ASC
+        ORDER BY (s.image_url IS NOT NULL AND s.image_url != '') DESC, s.name ASC
     ", [$tag_row['id']])->get_result()->fetch_all(MYSQLI_ASSOC);
 
     $page_title = $tag_row['name'] . ' Skateparks';
