@@ -24,7 +24,7 @@ if ($name) {
         SELECT s.slug, s.name, s.name_ja, s.city, s.park_type, s.surface_type, s.admission_fee, s.image_url
         FROM skateparks s
         WHERE s.prefecture_id = ?
-        ORDER BY s.name ASC
+        ORDER BY (s.image_url IS NOT NULL AND s.image_url != '') DESC, s.name ASC
     ", [$pref['id']])->get_result()->fetch_all(MYSQLI_ASSOC);
 
     $page_title = $pref['name'] . ' Skateparks';

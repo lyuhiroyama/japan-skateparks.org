@@ -40,7 +40,7 @@ $results_sql = "
     FROM skateparks s
     JOIN prefectures p ON p.id = s.prefecture_id
     $where_sql
-    ORDER BY s.name ASC
+    ORDER BY (s.image_url IS NOT NULL AND s.image_url != '') DESC, s.name ASC
     LIMIT $per_page OFFSET $offset
 ";
 $results = db_run($results_sql, $bindings)->get_result()->fetch_all(MYSQLI_ASSOC);
